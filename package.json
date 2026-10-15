@@ -1,0 +1,14 @@
+{
+  "name": "x99-project",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "sass --watch --poll scss/index.scss:Index.css",
+    "sass": "sass --watch --poll scss/index.scss:Index.css",
+    "build": "sass --style=expanded --no-source-map scss/index.scss Index.css",
+    "build:production": "sass --style=compressed --no-source-map scss/index.scss Index.css"
+  },
+  "devDependencies": {
+    "sass": "^1.105.1"
+  }
+}
