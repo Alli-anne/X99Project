@@ -3,12 +3,16 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
+    "prestart": "npm run build",
+    "start": "concurrently --kill-others --names sass,server \"npm run sass\" \"vite\"",
     "dev": "sass --watch --poll scss/index.scss:Index.css",
     "sass": "sass --watch --poll scss/index.scss:Index.css",
     "build": "sass --style=expanded --no-source-map scss/index.scss Index.css",
     "build:production": "sass --style=compressed --no-source-map scss/index.scss Index.css"
   },
   "devDependencies": {
-    "sass": "^1.105.1"
+    "concurrently": "^10.0.6",
+    "sass": "^1.105.1",
+    "vite": "^8.3.4"
   }
 }
