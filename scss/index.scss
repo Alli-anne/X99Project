@@ -1,3 +1,21 @@
 // Write your project styles here. Sass compiles this file into Index.css.
 // To split styles into partials, add files such as _header.scss in this folder
 // and load them here with: @use 'header';
+
+@font-face {
+  font-family: 'Garet';
+  src: url('./fonts/Garet-Book.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Garet';
+  src: url('./fonts/Garet-Heavy.woff2') format('woff2');
+  font-weight: 800;
+  font-style: normal;
+}
+
+body {
+  font-family: 'Garet', sans-serif;
+}
