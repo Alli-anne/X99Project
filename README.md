@@ -53,6 +53,29 @@ For more organization, create partials such as `scss/_header.scss` and load them
 from the top of `scss/index.scss` with `@use 'header';`. Keep SCSS files in the
 `scss` folder so the watcher picks up changes.
 
+## Page styles
+
+Open these routes while `npm run start` is running:
+
+- `/opening.html`: opening screen with the Start Designing link.
+- `/vibe.html`: categories, main color, and inspiration images.
+- `/edit.html`: design board with an expandable editing toolbar.
+- `/final.html`: final board preview and existing action links.
+
+The SCSS is split into `_tokens.scss` (colors), `_base.scss` (fonts and shared
+elements), `_opening.scss`, `_vibe.scss`, and `_board.scss` (edit and final).
+`scss/index.scss` loads these files. Edit a partial and the Sass watcher will
+recompile it automatically.
+
+The palette and font samples are static reference content. The toolbar expands
+and collapses, and the page links work; generation, refreshing, drawing, undo,
+downloads, sharing, and AI actions still need application logic.
+Photos are substitutes loaded from Unsplash and require an internet connection.
+Add Garet Book and Heavy files under `fonts/` to load the local font declarations.
+The sample text names Open Sauce and Arvo follow the reference; the font previews
+currently use Garet/Arial and Arvo/Georgia fallback stacks until font assets are
+provided.
+
 ## Build once
 
 ```sh

@@ -16,54 +16,57 @@
         </div>
         <div class="categories">
             <ul class="categories__list">
-                <li class="categories__item"><button class="categories__button">Minimal</button></li>
-                <li class="categories__item"><button class="categories__button">Modern</button></li>
-                <li class="categories__item"><button class="categories__button">Clean</button></li>
-                <li class="categories__item"><button class="categories__button">Bold</button></li>
-                <li class="categories__item"><button class="categories__button">Playful</button></li>
-                <li class="categories__item"><button class="categories__button">Elegant</button></li>
-                <li class="categories__item"><button class="categories__button">Professional</button></li>
-                <li class="categories__item"><button class="categories__button">Cozy</button></li>
-                <li class="categories__item"><button class="categories__button">Whimsical</button></li>
-                <li class="categories__item"><button class="categories__button">futuristic</button></li>
-                <li class="categories__item"><button class="categories__button">Retro</button></li>
-                <li class="categories__item"><button class="categories__button">Vintage</button></li>
-                <li class="categories__item"><button class="categories__button">Organic</button></li>
-                <li class="categories__item"><button class="categories__button">Edgy</button></li>
-                <li class="categories__item"><button class="categories__button">Luxurious</button></li>
-                <li class="categories__item"><button class="categories__button">Geometric</button></li>
-                <li class="categories__item"><button class="categories__button">Soft</button></li>
-                <li class="categories__item"><button class="categories__button">Sharp</button></li>
+                <li class="categories__item"><button class="categories__button" type="button" aria-pressed="false">Minimal</button></li>
+                <li class="categories__item"><button class="categories__button" type="button" aria-pressed="true">Modern</button></li>
+                <li class="categories__item"><button class="categories__button" type="button" aria-pressed="false">Clean</button></li>
+                <li class="categories__item"><button class="categories__button" type="button" aria-pressed="false">Bold</button></li>
+                <li class="categories__item"><button class="categories__button" type="button" aria-pressed="false">Playful</button></li>
+                <li class="categories__item"><button class="categories__button" type="button" aria-pressed="false">Elegant</button></li>
+                <li class="categories__item"><button class="categories__button" type="button" aria-pressed="false">Professional</button></li>
+                <li class="categories__item"><button class="categories__button" type="button" aria-pressed="false">Cozy</button></li>
+                <li class="categories__item"><button class="categories__button" type="button" aria-pressed="false">Whimsical</button></li>
+                <li class="categories__item"><button class="categories__button" type="button" aria-pressed="false">futuristic</button></li>
+                <li class="categories__item"><button class="categories__button" type="button" aria-pressed="false">Retro</button></li>
+                <li class="categories__item"><button class="categories__button" type="button" aria-pressed="false">Vintage</button></li>
+                <li class="categories__item"><button class="categories__button" type="button" aria-pressed="false">Organic</button></li>
+                <li class="categories__item"><button class="categories__button" type="button" aria-pressed="false">Edgy</button></li>
+                <li class="categories__item"><button class="categories__button" type="button" aria-pressed="false">Luxurious</button></li>
+                <li class="categories__item"><button class="categories__button" type="button" aria-pressed="false">Geometric</button></li>
+                <li class="categories__item"><button class="categories__button" type="button" aria-pressed="false">Soft</button></li>
+                <li class="categories__item"><button class="categories__button" type="button" aria-pressed="false">Sharp</button></li>
             </ul>
         </div>
         <div class="color-picker">
             <h2 class="color-picker__title">Main Color</h2>
             <div class="color-box color-picker__swatch"></div>
-            <h3 class="color-picker__value">#FFFFFF</h3>
-            <button class="color-picker__button"><img class="color-picker__icon" src=""></button>
+            <h3 class="color-picker__value">#d6c5c7</h3>
+            <button class="color-picker__button" type="button" aria-label="Choose main color"><svg viewBox="0 0 32 32" width="30" height="30" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m19 12-12 12-1 5 5-1 12-12M16 9l9 9M20 11l4-6a3 3 0 0 1 4 4l-6 4M5 29l-2 2"/></svg></button>
         </div>
         <div class="style-preview">
-            <h2 class="style-preview__title">Modern</h2>
+            <div class="style-preview__heading">
+                <h2 class="style-preview__title">Modern</h2>
+                <button class="refresh-button" type="button" aria-label="Refresh inspiration images">⟳</button>
+            </div>
             <div class="style-preview__grid">
                 <div class="style-preview__row">
-                    <button class="style-preview__button"><img class="style-preview__image" src=""></button>
-                    <button class="style-preview__button"><img class="style-preview__image" src=""></button>
+                    <button class="style-preview__button" type="button" aria-label="Select inspiration: glass skyscrapers viewed from below"><img class="style-preview__image" src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&amp;fit=crop&amp;w=600&amp;q=85" alt="Glass skyscrapers viewed from below"></button>
+                    <button class="style-preview__button" type="button" aria-label="Select inspiration: white geometric modern architecture"><img class="style-preview__image" src="https://images.unsplash.com/photo-1487958449943-2429e8be8625?auto=format&amp;fit=crop&amp;w=600&amp;q=85" alt="White geometric modern architecture"></button>
                 </div>
                 <div class="style-preview__row">
-                    <button class="style-preview__button"><img class="style-preview__image" src=""></button>
-                    <button class="style-preview__button"><img class="style-preview__image" src=""></button>
+                    <button class="style-preview__button" type="button" aria-label="Select inspiration: a modern office interior"><img class="style-preview__image" src="https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&amp;fit=crop&amp;w=600&amp;q=85" alt="A modern office interior"></button>
+                    <button class="style-preview__button" type="button" aria-label="Select inspiration: a modern home with clean architectural lines"><img class="style-preview__image" src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&amp;fit=crop&amp;w=600&amp;q=85" alt="A modern home with clean architectural lines"></button>
                 </div>
                 <div class="style-preview__row">
-                    <button class="style-preview__button"><img class="style-preview__image" src=""></button>
-                    <button class="style-preview__button"><img class="style-preview__image" src=""></button>
+                    <button class="style-preview__button" type="button" aria-label="Select inspiration: angular architectural facade"><img class="style-preview__image" src="https://images.unsplash.com/photo-1511818966892-d7d671e672a2?auto=format&amp;fit=crop&amp;w=600&amp;q=85" alt="Angular architectural facade"></button>
+                    <button class="style-preview__button" type="button" aria-label="Select inspiration: sculptural contemporary architecture"><img class="style-preview__image" src="https://images.unsplash.com/photo-1518005020951-eccb494ad742?auto=format&amp;fit=crop&amp;w=600&amp;q=85" alt="Sculptural contemporary architecture"></button>
                 </div>
                 <div class="style-preview__row">
-                    <button class="style-preview__button"><img class="style-preview__image" src=""></button>
-                    <button class="style-preview__button"><img class="style-preview__image" src=""></button>
+                    <button class="style-preview__button" type="button" aria-label="Select inspiration: bright modern living room"><img class="style-preview__image" src="https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&amp;fit=crop&amp;w=600&amp;q=85" alt="Bright modern living room"></button>
+                    <button class="style-preview__button" type="button" aria-label="Select inspiration: curved white architectural details"><img class="style-preview__image" src="https://images.unsplash.com/photo-1487958449943-2429e8be8625?auto=format&amp;fit=crop&amp;w=600&amp;q=85" alt="Curved white architectural details"></button>
                 </div>
             </div>
         </div>
-        <button class="vibe-page__generate-button">Generate</button>
+        <a class="vibe-page__generate-button action-button" href="edit.html">Generate</a>
     </main>
 </body>
 </html>

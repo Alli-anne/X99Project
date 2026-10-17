@@ -6,26 +6,37 @@
     <title>X99 Project</title>
     <link rel="stylesheet" href="Index.css">
   </head>
-  <body>
+  <body class="design-page edit-page">
     <header id="main-header">
       <h1>Easy Design</h1>
     </header>
-    <main>
+    <main class="design-workspace">
       <section id="edit-page">
-        <h2 id="project-name"></h2>
-        <div class="color-palette">
-          <img class="cooler-colors"
-            src=""
-            alt="Color palette from Coolors">
+        <h2 id="project-name">Project Name</h2>
+        <div class="color-palette" aria-label="Project color palette">
+          <div class="palette-swatch palette-swatch--cream">DDD8C4</div>
+          <div class="palette-swatch palette-swatch--mint">A3C9A8</div>
+          <div class="palette-swatch palette-swatch--sage">84B59F</div>
+          <div class="palette-swatch palette-swatch--teal">69A297</div>
+          <button class="refresh-button" type="button" aria-label="Refresh palette">⟳</button>
         </div>
         <div class="fonts-div">
           <div class="fonts">
-            <h3>Header Font</h3>
-            <ul id="header-font"></ul>
+            <h3>Header Font <button class="refresh-button" type="button" aria-label="Refresh header font">⟳</button></h3>
+            <ul id="header-font">
+              <li>Open Sauce</li>
+              <li>Open Sauce</li>
+              <li>Open Sauce</li>
+              <li>Open Sauce</li>
+              <li>Open Sauce</li>
+            </ul>
           </div>
           <div class="fonts">
-            <h3>Body Font</h3>
-            <ul id="body-font"></ul>
+            <h3>Body Font <button class="refresh-button" type="button" aria-label="Refresh body font">⟳</button></h3>
+            <ul id="body-font">
+              <li>Arvo</li>
+              <li>Arvo</li>
+            </ul>
           </div>
         </div>
         <div class="button-div">
@@ -35,27 +46,24 @@
           <button class="btn">BUTTON</button>
         </div>
         <div class="img-div">
-          <img class="catagory-img"
-            src=""
-            alt="">
-            <img class="catagory-img"
-            src=""
-            alt="">
+          <img class="catagory-img" src="https://images.unsplash.com/photo-1459411552884-841db9b3cc2a?auto=format&amp;fit=crop&amp;w=600&amp;q=85" alt="Green plant leaves against a light background">
+          <img class="catagory-img" src="https://images.unsplash.com/photo-1566908829550-e6551b00979b?auto=format&amp;fit=crop&amp;w=600&amp;q=85" alt="Delicate flowers in natural light">
         </div>
       </section>
-      <section id="edit-tools">
-        <button class="tools">
-          <button id="draw"></button>
-          <button id="shapes"></button>
-          <button id="colors"></button>
-          <button id="eyedropper"></button>
-          <button id="boarders"></button>
-        </button>
-      </section>
+      <details id="edit-tools" open>
+        <summary class="tools-toggle" aria-label="Toggle editing tools">✎</summary>
+        <div class="tools-list" role="group" aria-label="Editing tools">
+          <button class="tools" id="draw" type="button" aria-label="Draw">〰</button>
+          <button class="tools" id="shapes" type="button" aria-label="Shapes"></button>
+          <button class="tools" id="colors" type="button" aria-label="Colors"></button>
+          <button class="tools" id="eyedropper" type="button" aria-label="Eyedropper"><svg viewBox="0 0 32 32" width="30" height="30" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m19 12-12 12-1 5 5-1 12-12M16 9l9 9M20 11l4-6a3 3 0 0 1 4 4l-6 4M5 29l-2 2"/></svg></button>
+          <button class="tools" id="boarders" type="button" aria-label="Borders">◕</button>
+        </div>
+      </details>
       <section id="edit-utility">
         <div>
-          <button id="undo"></button>
-          <button id="redo"></button>
+          <button id="undo" type="button" aria-label="Undo">↶</button>
+          <button id="redo" type="button" aria-label="Redo">↷</button>
         </div>
         <div>
           <a 

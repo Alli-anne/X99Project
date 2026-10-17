@@ -1,0 +1,166 @@
+@use 'tokens' as *;
+
+.vibe-page {
+  max-width: 910px;
+  margin-inline: auto;
+  padding-bottom: 56px;
+
+  // Grid areas keep the sidebar together while the preview spans its rows.
+  &__main {
+    display: grid;
+    grid-template-columns: 262px minmax(0, 1fr);
+    grid-template-areas:
+      'heading preview'
+      'categories preview'
+      'color preview'
+      'color generate';
+    grid-template-rows: auto auto 1fr auto;
+    gap: 0 62px;
+    align-items: start;
+    padding: 26px 40px 0;
+  }
+  &__generate-button {
+    grid-area: generate;
+    justify-self: center;
+    margin-top: 46px;
+    font-size: clamp(30px, 5vw, 46px);
+  }
+}
+
+.categories-header {
+  grid-area: heading;
+  &__title {
+    margin: 0 0 10px;
+    font-size: 30px;
+    font-weight: 400;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+  }
+}
+.categories {
+  grid-area: categories;
+  &__list {
+    list-style: none;
+    margin: 0;
+    padding: 9px 18px 14px;
+    background: $taupe;
+    box-shadow: $shadow;
+  }
+  &__button {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    width: 100%;
+    min-height: 38px;
+    border: 0;
+    padding: 5px 0;
+    background: transparent;
+    color: #f9f0f2;
+    font-size: 20px;
+    line-height: 1.32;
+    text-align: left;
+    text-transform: uppercase;
+    &::before {
+      content: '';
+      flex: 0 0 27px;
+      height: 27px;
+      border: 3px solid currentColor;
+      border-radius: 50%;
+    }
+    &[aria-pressed='true']::before { background: currentColor; }
+    &:hover { color: white; }
+  }
+}
+.color-picker {
+  grid-area: color;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  margin-top: 56px;
+  &__title {
+    grid-column: 1 / -1;
+    margin: 0 0 10px;
+    white-space: nowrap;
+    text-transform: uppercase;
+    font-size: 30px;
+    font-weight: 400;
+    letter-spacing: 4px;
+  }
+  &__swatch {
+    grid-column: 1 / -1;
+    width: 180px;
+    height: 120px;
+    margin: 0 auto 6px;
+    background: $rose;
+  }
+  &__value { margin: 0; font-size: 30px; text-align: right; font-weight: 800; }
+  &__button {
+    border: 0;
+    padding: 0 12px;
+    background: transparent;
+    color: $slate;
+    font-size: 30px;
+    line-height: 1;
+  }
+}
+.style-preview {
+  grid-area: preview;
+  min-width: 0;
+  padding-top: 34px;
+  &__heading {
+    position: relative;
+    width: 61%;
+    margin: 0 auto 14px;
+    .refresh-button { position: absolute; left: calc(100% + 26px); top: 4px; color: $taupe; }
+  }
+  &__title {
+    margin: 0;
+    padding: 4px 10px;
+    background: $slate;
+    color: #f9f0f2;
+    box-shadow: $shadow;
+    text-align: center;
+    text-transform: uppercase;
+    font-size: 30px;
+    letter-spacing: 7px;
+    line-height: 1.25;
+  }
+  &__grid { display: grid; gap: 20px; }
+  &__row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+  &__button {
+    display: block;
+    width: 100%;
+    border: 0;
+    padding: 0;
+    background: $rose;
+    box-shadow: $shadow;
+    overflow: hidden;
+    transition: transform 150ms ease;
+    &:hover { transform: translateY(-3px); }
+  }
+  &__image { width: 100%; aspect-ratio: 1.28; object-fit: cover; }
+}
+
+@media (max-width: 760px) {
+  .vibe-page {
+    &__main { padding-inline: 24px; grid-template-columns: 220px minmax(0, 1fr); column-gap: 28px; }
+    &__generate-button { padding-inline: 24px; }
+  }
+  .categories__button { font-size: 16px; }
+  .categories-header__title, .color-picker__title { font-size: 24px; letter-spacing: 3px; }
+  .style-preview__title { font-size: 22px; letter-spacing: 3px; }
+  .style-preview__heading .refresh-button { left: calc(100% + 10px); font-size: 26px; }
+}
+@media (max-width: 580px) {
+  .vibe-page__main {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: 'heading' 'categories' 'color' 'preview' 'generate';
+    gap: 20px;
+  }
+  .categories__list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 12px; }
+  .categories__button { gap: 8px; font-size: 14px; }
+  .categories__button::before { flex-basis: 22px; height: 22px; }
+  .color-picker { max-width: 262px; justify-self: center; margin-top: 10px; }
+  .style-preview { width: 100%; padding-top: 6px; }
+  .vibe-page__generate-button { margin-top: 12px; }
+}

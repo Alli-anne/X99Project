@@ -1,0 +1,244 @@
+@use 'tokens' as *;
+
+// Shared design board for edit.html and final.html.
+.design-page {
+  max-width: 880px;
+  margin-inline: auto;
+  border: 6px solid #f0f1f2;
+  background: $canvas;
+  color: #67a69b;
+  #main-header { padding-bottom: 8px; }
+}
+.design-workspace {
+  position: relative;
+  display: grid;
+  grid-template-columns: 82px minmax(0, 1fr);
+  column-gap: 24px;
+  padding: 12px 60px 26px 0;
+}
+#edit-page, #final-page {
+  grid-column: 2;
+  min-width: 0;
+  padding: 12px 34px 42px;
+  border-radius: 14px;
+  background: $paper;
+}
+#project-name {
+  margin: 0;
+  text-align: center;
+  font-size: 40px;
+  font-weight: 400;
+  letter-spacing: 9px;
+  line-height: 1.45;
+}
+.color-palette {
+  position: relative;
+  display: flex;
+  width: 75%;
+  margin: 0 auto 12px;
+  .refresh-button { position: absolute; left: calc(100% + 8px); top: 0; }
+}
+.palette-swatch {
+  display: grid;
+  flex: 1;
+  place-items: center;
+  min-width: 0;
+  min-height: 158px;
+  color: black;
+  font-family: Arial, sans-serif;
+  font-size: clamp(16px, 2.7vw, 24px);
+  font-weight: 700;
+  // Palette colors follow the screenshot's visual samples.
+  &--cream { background: $cream; }
+  &--mint { background: $mint; }
+  &--sage { background: #90cdb0; }
+  &--teal { background: $teal; }
+}
+.fonts-div {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 42px;
+  margin: 0 0 36px;
+}
+.fonts {
+  min-width: 0;
+  h3 {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 4px;
+    margin: 0 10px 4px;
+    font-size: 28px;
+    font-weight: 400;
+    letter-spacing: 5px;
+    line-height: 1.35;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  .refresh-button { font-size: 30px; }
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 10px 12px;
+    border-radius: 21px;
+    background: $mint;
+    font-size: 32px;
+    line-height: 1.18;
+    letter-spacing: 7px;
+  }
+}
+#header-font {
+  font-family: 'Garet', Arial, sans-serif;
+  li:nth-child(1) { font-weight: 300; }
+  li:nth-child(2) { font-weight: 400; }
+  li:nth-child(3) { font-weight: 500; }
+  li:nth-child(4) { font-weight: 700; }
+  li:nth-child(5) { font-weight: 800; }
+}
+#body-font {
+  padding: 14px 24px;
+  font-family: Arvo, Georgia, serif;
+  li:last-child { font-weight: 700; }
+}
+.button-div {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px 34px;
+  margin: 0 8px 32px;
+  .btn {
+    min-height: 106px;
+    border: 0;
+    border-radius: 17px;
+    padding: 18px 12px;
+    color: #67a69b;
+    font-size: 32px;
+    font-weight: 800;
+    letter-spacing: 7px;
+    &:nth-child(1) { background: $teal; color: $cream; }
+    &:nth-child(2) { background: $cream; }
+    &:nth-child(3) { background: #adf39f; color: $teal; }
+    &:nth-child(4) { background: #96edbe; color: #7bcea5; }
+    &:hover { filter: brightness(.96); }
+  }
+}
+.img-div {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 68px;
+  margin: 0 48px;
+  .catagory-img { width: 100%; aspect-ratio: 1.28; object-fit: cover; border-radius: 18px; }
+}
+
+// Native details/summary provides the collapsed and expanded toolbar states.
+#edit-tools, .board-edit-link {
+  grid-column: 1;
+  grid-row: 1;
+  justify-self: center;
+  margin: 8px 0 0 14px;
+}
+.tools-toggle, .board-edit-link {
+  display: grid;
+  place-items: center;
+  width: 60px;
+  height: 62px;
+  border-radius: 16px;
+  background: $taupe;
+  color: white;
+  font-size: 50px;
+  line-height: 1;
+  text-decoration: none;
+  list-style: none;
+  &::-webkit-details-marker { display: none; }
+}
+.tools-list {
+  display: grid;
+  justify-items: center;
+  gap: 14px;
+  margin-top: 12px;
+}
+.tools {
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  border: 0;
+  border-radius: 8px;
+  padding: 6px;
+  background: $rose;
+  color: #222;
+  font-size: 30px;
+  box-shadow: 3px 3px 5px #0003;
+  &:hover { filter: brightness(.94); }
+}
+#draw { font-style: italic; color: #756e71; }
+#shapes { position: relative; &::before { content: ''; width: 21px; height: 21px; background: #7d837f; box-shadow: 10px 6px 0 -1px black; } }
+#colors::before {
+  content: '';
+  width: 29px;
+  height: 29px;
+  border-radius: 50%;
+  background: conic-gradient(#f33 0deg 120deg, #ffda29 120deg 240deg, #2255ed 240deg);
+}
+#boarders { font-weight: 800; }
+#edit-utility {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: 240px minmax(0, 1fr);
+  align-items: center;
+  margin-top: 42px;
+  > div:first-child { display: flex; justify-content: space-around; }
+  > div:last-child { justify-self: center; }
+  .finish-edit-btn { min-width: 264px; padding: 12px 30px; font-size: 38px; text-decoration: underline; }
+}
+#undo, #redo {
+  border: 0;
+  padding: 0;
+  background: none;
+  color: $rose;
+  font-size: 90px;
+  line-height: 1;
+}
+#final-options {
+  grid-column: 2;
+  margin-top: 26px;
+  > div { display: flex; justify-content: center; flex-wrap: wrap; gap: 12px; }
+  a { padding: 12px 24px; font-size: 20px; }
+}
+
+@media (max-width: 780px) {
+  .design-workspace { grid-template-columns: 66px minmax(0, 1fr); gap: 16px; padding-right: 22px; }
+  #edit-page, #final-page { padding-inline: 20px; }
+  #project-name { font-size: 32px; letter-spacing: 6px; }
+  .fonts-div { gap: 22px; }
+  .fonts h3 { font-size: 20px; letter-spacing: 2px; margin-inline: 0; }
+  .fonts ul { font-size: 24px; letter-spacing: 4px; }
+  .button-div { gap: 18px; margin-inline: 0; .btn { font-size: 24px; letter-spacing: 4px; } }
+  .img-div { margin-inline: 12px; gap: 30px; }
+  .palette-swatch { min-height: 125px; }
+  .tools-toggle, .board-edit-link { width: 48px; height: 52px; }
+  #edit-tools, .board-edit-link { margin-left: 0; }
+}
+@media (max-width: 540px) {
+  .design-workspace { grid-template-columns: 44px minmax(0, 1fr); gap: 10px; padding-right: 10px; }
+  #edit-page, #final-page { padding: 14px 12px 24px; }
+  #project-name { font-size: 25px; letter-spacing: 3px; }
+  .color-palette { width: calc(100% - 28px); margin-inline: 0; }
+  .palette-swatch { min-height: 90px; font-size: 12px; }
+  .color-palette .refresh-button { font-size: 24px; left: calc(100% + 3px); }
+  .fonts-div { grid-template-columns: 1fr; gap: 20px; margin-bottom: 24px; }
+  .fonts h3 { justify-content: center; gap: 12px; }
+  .fonts ul { font-size: 25px; text-align: center; }
+  .button-div { gap: 12px; .btn { min-height: 72px; font-size: 16px; letter-spacing: 2px; } }
+  .img-div { margin: 0; gap: 12px; }
+  .tools-toggle, .board-edit-link { width: 38px; height: 44px; border-radius: 10px; font-size: 34px; }
+  .tools { width: 34px; height: 36px; font-size: 24px; }
+  #edit-utility {
+    grid-template-columns: 1fr;
+    gap: 20px;
+    margin-top: 20px;
+    > div:first-child { justify-content: center; gap: 50px; }
+    .finish-edit-btn { min-width: 0; font-size: 28px; }
+  }
+  #undo, #redo { font-size: 64px; }
+  #final-options a { font-size: 16px; }
+}
