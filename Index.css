@@ -186,19 +186,29 @@ img {
   line-height: 1.32;
   text-align: left;
   text-transform: uppercase;
-}
-.categories__button::before {
-  content: "";
-  flex: 0 0 27px;
-  height: 27px;
-  border: 3px solid currentColor;
-  border-radius: 50%;
-}
-.categories__button[aria-pressed=true]::before {
-  background: currentColor;
+  cursor: pointer;
 }
 .categories__button:hover {
   color: white;
+}
+.categories__input {
+  appearance: none;
+  flex: 0 0 27px;
+  width: 27px;
+  height: 27px;
+  margin: 0;
+  border: 3px solid currentColor;
+  border-radius: 50%;
+  color: inherit;
+  background: transparent;
+  cursor: pointer;
+}
+.categories__input:checked {
+  background: currentColor;
+}
+.categories__input:focus-visible {
+  outline: 3px solid white;
+  outline-offset: 4px;
 }
 
 .color-picker {
@@ -246,7 +256,9 @@ img {
 }
 .style-preview__heading {
   position: relative;
-  width: 61%;
+  width: max-content;
+  max-width: 100%;
+  min-width: 61%;
   margin: 0 auto 14px;
 }
 .style-preview__heading .refresh-button {
@@ -263,35 +275,33 @@ img {
   box-shadow: 8px 10px 12px rgba(0, 0, 0, 0.2);
   text-align: center;
   text-transform: uppercase;
-  font-size: 30px;
-  letter-spacing: 7px;
+  font-size: clamp(19px, 3.3vw, 30px);
+  letter-spacing: 3px;
   line-height: 1.25;
 }
 .style-preview__grid {
   display: grid;
-  gap: 20px;
-}
-.style-preview__row {
-  display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 14px;
+  gap: 20px 14px;
 }
-.style-preview__button {
+.style-preview__tile {
   display: block;
   width: 100%;
   border: 0;
   padding: 0;
+  margin: 0;
   background: #d6c5c7;
   box-shadow: 8px 10px 12px rgba(0, 0, 0, 0.2);
   overflow: hidden;
   transition: transform 150ms ease;
 }
-.style-preview__button:hover {
+.style-preview__tile:hover {
   transform: translateY(-3px);
 }
 .style-preview__image {
   width: 100%;
-  aspect-ratio: 1.28;
+  height: auto;
+  aspect-ratio: 1;
   object-fit: cover;
 }
 
@@ -335,8 +345,9 @@ img {
     gap: 8px;
     font-size: 14px;
   }
-  .categories__button::before {
+  .categories__input {
     flex-basis: 22px;
+    width: 22px;
     height: 22px;
   }
   .color-picker {

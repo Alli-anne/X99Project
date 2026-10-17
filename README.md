@@ -67,6 +67,20 @@ elements), `_opening.scss`, `_vibe.scss`, and `_board.scss` (edit and final).
 `scss/index.scss` loads these files. Edit a partial and the Sass watcher will
 recompile it automatically.
 
+On `/vibe.html`, category labels contain native radio buttons. Selecting one
+runs `showImages()` in `scripts/vibe.js`, which fills one gallery from the
+selected category's list in `scripts/category-images.js`. All 18 categories
+have eight photos each. To replace or add photos, edit the category's list of
+`{ url, alt }` objects; the gallery automatically renders however many you add.
+Use ordinary `&` characters in JavaScript URLs (HTML uses `&amp;`).
+
+Modern is selected initially. Use Tab to focus the category group and arrow
+keys to change selection. JavaScript is required for the image gallery; run
+`npm run start` and open the localhost URL so the JavaScript modules load.
+The selection is not saved or passed to the edit page. This is a curated
+gallery, not a live Unsplash API search. Photos may appear in more than one
+category.
+
 The palette and font samples are static reference content. The toolbar expands
 and collapses, and the page links work; generation, refreshing, drawing, undo,
 downloads, sharing, and AI actions still need application logic.
