@@ -13,3 +13,8 @@
 body {
   font-family: "Garet", sans-serif;
 }
+
+h1 {
+  font-family: "Garet", sans-serif;
+  font-weight: 800;
+}
