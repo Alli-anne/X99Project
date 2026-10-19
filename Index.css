@@ -545,6 +545,21 @@ img {
   aspect-ratio: 1.28;
   object-fit: cover;
   border-radius: 18px;
+  
+}
+
+#editing-selected-images {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 5%
+}
+
+#editing-selected-images .catagory-img {
+  width: 100%;
+  aspect-ratio: 1.28;
+  object-fit: cover;
+  border-radius: 18px;
 }
 
 #edit-tools, .board-edit-link {
