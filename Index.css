@@ -66,6 +66,12 @@ img {
   letter-spacing: 1px;
 }
 
+.vibe-page > .site-header,
+.design-page > #main-header {
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+}
+
 .action-button, .finish-edit-btn {
   display: inline-block;
   border: 0;

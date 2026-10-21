@@ -52,6 +52,13 @@ img { display: block; max-width: 100%; }
   }
 }
 
+// The page content stays centered, but the header reaches both viewport edges.
+.vibe-page > .site-header,
+.design-page > #main-header {
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+}
+
 // Shared large action button.
 .action-button, .finish-edit-btn {
   display: inline-block;
