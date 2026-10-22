@@ -2,26 +2,46 @@
 
 // Shared design board for edit.html and final.html.
 .design-page {
-  max-width: 880px;
+  width: min(100%, 1100px);
+  max-width: 1100px;
   margin-inline: auto;
   border: 6px solid #f0f1f2;
   background: $canvas;
   color: #67a69b;
+  overflow-x: hidden;
   #main-header { padding-bottom: 8px; }
 }
 .design-workspace {
   position: relative;
   display: grid;
-  grid-template-columns: 82px minmax(0, 1fr);
-  column-gap: 24px;
-  padding: 12px 60px 26px 0;
+  grid-template-columns: 72px minmax(0, 1fr);
+  column-gap: 28px;
+  width: min(100%, 1060px);
+  margin-inline: auto;
+  padding: 18px 34px 36px 18px;
 }
 #edit-page, #final-page {
   grid-column: 2;
   min-width: 0;
-  padding: 12px 34px 42px;
+  width: 100%;
+  padding: 26px clamp(24px, 4vw, 56px) 48px;
   border-radius: 14px;
   background: $paper;
+}
+
+// The finished board has no editing sidebar, so let its content use the full page width.
+.final-page {
+  .design-workspace {
+    grid-template-columns: minmax(0, 1fr);
+    width: 100%;
+    max-width: none;
+    padding-inline: clamp(16px, 4vw, 60px);
+  }
+  #final-page {
+    grid-column: 1;
+    min-height: calc(100vh - 120px);
+  }
+  #final-options { grid-column: 1; }
 }
 #project-name {
   margin: 0;
@@ -57,8 +77,8 @@
 .fonts-div {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 42px;
-  margin: 0 0 36px;
+  gap: clamp(22px, 4vw, 54px);
+  margin: 0 0 42px;
 }
 .fonts {
   min-width: 0;
@@ -82,9 +102,11 @@
     padding: 10px 12px;
     border-radius: 21px;
     background: $mint;
-    font-size: 32px;
+    font-size: clamp(18px, 2.2vw, 28px);
     line-height: 1.18;
-    letter-spacing: 7px;
+    letter-spacing: clamp(1px, 0.3vw, 5px);
+    white-space: nowrap;
+    font-synthesis: weight;
   }
 }
 #header-font {
@@ -103,8 +125,8 @@
 .button-div {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 18px 34px;
-  margin: 0 8px 32px;
+  gap: 20px clamp(20px, 4vw, 42px);
+  margin: 0 0 38px;
   .btn {
     min-height: 106px;
     border: 0;
@@ -126,6 +148,13 @@
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 68px;
   margin: 0 48px;
+  #editing-selected-images {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px;
+    min-width: 0;
+    grid-column: 1 / -1;
+  }
   .catagory-img { width: 100%; aspect-ratio: 1.28; object-fit: cover; border-radius: 18px; }
 }
 
@@ -195,25 +224,36 @@
   padding: 0;
   background: none;
   color: $rose;
-  font-size: 90px;
-  line-height: 1;
+  font-size: 110px;
+  line-height: .7;
 }
 #final-options {
   grid-column: 2;
   margin-top: 26px;
   > div { display: flex; justify-content: center; flex-wrap: wrap; gap: 12px; }
-  a { padding: 12px 24px; font-size: 20px; }
+  a {
+    display: inline-flex;
+    width: 180px;
+    min-height: 72px;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    box-sizing: border-box;
+    padding: 12px 18px;
+    font-size: 20px;
+  }
+  .final-action-icon { font-size: 1.35em; line-height: 1; }
 }
 
 @media (max-width: 780px) {
-  .design-workspace { grid-template-columns: 66px minmax(0, 1fr); gap: 16px; padding-right: 22px; }
+  .design-workspace { grid-template-columns: 66px minmax(0, 1fr); gap: 16px; padding: 14px 22px 30px 12px; }
   #edit-page, #final-page { padding-inline: 20px; }
   #project-name { font-size: 32px; letter-spacing: 6px; }
   .fonts-div { gap: 22px; }
   .fonts h3 { font-size: 20px; letter-spacing: 2px; margin-inline: 0; }
   .fonts ul { font-size: 24px; letter-spacing: 4px; }
   .button-div { gap: 18px; margin-inline: 0; .btn { font-size: 24px; letter-spacing: 4px; } }
-  .img-div { margin-inline: 12px; gap: 30px; }
+  .img-div { margin-inline: 12px; gap: 30px; #editing-selected-images { gap: 16px; } }
   .palette-swatch { min-height: 125px; }
   .tools-toggle, .board-edit-link { width: 48px; height: 52px; }
   #edit-tools, .board-edit-link { margin-left: 0; }
@@ -229,7 +269,7 @@
   .fonts h3 { justify-content: center; gap: 12px; }
   .fonts ul { font-size: 25px; text-align: center; }
   .button-div { gap: 12px; .btn { min-height: 72px; font-size: 16px; letter-spacing: 2px; } }
-  .img-div { margin: 0; gap: 12px; }
+  .img-div { margin: 0; gap: 12px; #editing-selected-images { gap: 12px; } }
   .tools-toggle, .board-edit-link { width: 38px; height: 44px; border-radius: 10px; font-size: 34px; }
   .tools { width: 34px; height: 36px; font-size: 24px; }
   #edit-utility {
@@ -239,6 +279,6 @@
     > div:first-child { justify-content: center; gap: 50px; }
     .finish-edit-btn { min-width: 0; font-size: 28px; }
   }
-  #undo, #redo { font-size: 64px; }
-  #final-options a { font-size: 16px; }
+  #undo, #redo { font-size: 80px; }
+  #final-options a { width: 130px; min-height: 58px; padding-inline: 10px; font-size: 16px; }
 }

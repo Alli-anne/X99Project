@@ -370,11 +370,13 @@ img {
   }
 }
 .design-page {
-  max-width: 880px;
+  width: min(100%, 1100px);
+  max-width: 1100px;
   margin-inline: auto;
   border: 6px solid #f0f1f2;
   background: #f5edef;
   color: #67a69b;
+  overflow-x: hidden;
 }
 .design-page #main-header {
   padding-bottom: 8px;
@@ -383,17 +385,34 @@ img {
 .design-workspace {
   position: relative;
   display: grid;
-  grid-template-columns: 82px minmax(0, 1fr);
-  column-gap: 24px;
-  padding: 12px 60px 26px 0;
+  grid-template-columns: 72px minmax(0, 1fr);
+  column-gap: 28px;
+  width: min(100%, 1060px);
+  margin-inline: auto;
+  padding: 18px 34px 36px 18px;
 }
 
 #edit-page, #final-page {
   grid-column: 2;
   min-width: 0;
-  padding: 12px 34px 42px;
+  width: 100%;
+  padding: 26px clamp(24px, 4vw, 56px) 48px;
   border-radius: 14px;
   background: #fffdfd;
+}
+
+.final-page .design-workspace {
+  grid-template-columns: minmax(0, 1fr);
+  width: 100%;
+  max-width: none;
+  padding-inline: clamp(16px, 4vw, 60px);
+}
+.final-page #final-page {
+  grid-column: 1;
+  min-height: calc(100vh - 120px);
+}
+.final-page #final-options {
+  grid-column: 1;
 }
 
 #project-name {
@@ -444,8 +463,8 @@ img {
 .fonts-div {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 42px;
-  margin: 0 0 36px;
+  gap: clamp(22px, 4vw, 54px);
+  margin: 0 0 42px;
 }
 
 .fonts {
@@ -473,9 +492,11 @@ img {
   padding: 10px 12px;
   border-radius: 21px;
   background: #b6e7b3;
-  font-size: 32px;
+  font-size: clamp(18px, 2.2vw, 28px);
   line-height: 1.18;
-  letter-spacing: 7px;
+  letter-spacing: clamp(1px, 0.3vw, 5px);
+  white-space: nowrap;
+  font-synthesis: weight;
 }
 
 #header-font {
@@ -508,8 +529,8 @@ img {
 .button-div {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 18px 34px;
-  margin: 0 8px 32px;
+  gap: 20px clamp(20px, 4vw, 42px);
+  margin: 0 0 38px;
 }
 .button-div .btn {
   min-height: 106px;
@@ -545,6 +566,13 @@ img {
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 68px;
   margin: 0 48px;
+}
+.img-div #editing-selected-images {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+  min-width: 0;
+  grid-column: 1/-1;
 }
 .img-div .catagory-img {
   width: 100%;
@@ -655,8 +683,8 @@ img {
   padding: 0;
   background: none;
   color: #d6c5c7;
-  font-size: 90px;
-  line-height: 1;
+  font-size: 110px;
+  line-height: 0.7;
 }
 
 #final-options {
@@ -670,15 +698,26 @@ img {
   gap: 12px;
 }
 #final-options a {
-  padding: 12px 24px;
+  display: inline-flex;
+  width: 180px;
+  min-height: 72px;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  box-sizing: border-box;
+  padding: 12px 18px;
   font-size: 20px;
+}
+#final-options .final-action-icon {
+  font-size: 1.35em;
+  line-height: 1;
 }
 
 @media (max-width: 780px) {
   .design-workspace {
     grid-template-columns: 66px minmax(0, 1fr);
     gap: 16px;
-    padding-right: 22px;
+    padding: 14px 22px 30px 12px;
   }
   #edit-page, #final-page {
     padding-inline: 20px;
@@ -710,6 +749,9 @@ img {
   .img-div {
     margin-inline: 12px;
     gap: 30px;
+  }
+  .img-div #editing-selected-images {
+    gap: 16px;
   }
   .palette-swatch {
     min-height: 125px;
@@ -772,6 +814,9 @@ img {
     margin: 0;
     gap: 12px;
   }
+  .img-div #editing-selected-images {
+    gap: 12px;
+  }
   .tools-toggle, .board-edit-link {
     width: 38px;
     height: 44px;
@@ -797,9 +842,12 @@ img {
     font-size: 28px;
   }
   #undo, #redo {
-    font-size: 64px;
+    font-size: 80px;
   }
   #final-options a {
+    width: 130px;
+    min-height: 58px;
+    padding-inline: 10px;
     font-size: 16px;
   }
 }
