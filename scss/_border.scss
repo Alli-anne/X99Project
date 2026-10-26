@@ -1,0 +1,83 @@
+
+/* Border tool pop-out */
+#edit-tools {
+  position: relative;
+}
+
+.border-popout {
+  position: absolute;
+  right: calc(-500% + 4px);
+  z-index: 100;
+  width: 220px;
+  max-width: calc(100vw - 32px);
+  box-sizing: border-box;
+  padding: 18px;
+  background: #fff;
+  border: 1px solid #d6c5c7;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgb(0 0 0 / 15%);
+  color: #222;
+
+  &[hidden] {
+    display: none;
+  }
+
+  h3 {
+    margin: 0 0 16px;
+    font-size: 18px;
+  }
+}
+
+.border-option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+
+.border-control {
+  margin-top: 16px;
+
+  label {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 8px;
+    font-size: 14px;
+  }
+
+  input[type="range"] {
+    display: block;
+    width: 100%;
+    accent-color: #839096;
+  }
+}
+
+#boarders {
+  &[aria-expanded="true"] {
+    outline: 2px solid #839096;
+    outline-offset: 2px;
+  }
+}
+
+/* Styles applied to the selected design images */
+#editing-selected-images {
+  img {
+    box-sizing: border-box;
+  }
+}
+
+
+.border-control {
+  select {
+    display: block;
+    width: 100%;
+    margin-top: 8px;
+    padding: 8px;
+    border: 1px solid #d6c5c7;
+    border-radius: 6px;
+    background: #fff;
+    color: #222;
+    font: inherit;
+  }
+}
