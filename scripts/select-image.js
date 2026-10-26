@@ -15,18 +15,24 @@ function notifySelectionChange() {
   );
 }
 
+function clearSelectedImages() {
+  selectedImages.length = 0;
+  notifySelectionChange();
+}
+
+
 function toggleImageSelection(photo, category, tile) {
-  // Use category + ID because IDs may repeat between categories.
   const imageKey = `${category}-${photo.id}`;
+
   const selectedIndex = selectedImages.findIndex(
     (image) => image.key === imageKey
   );
 
   if (selectedIndex !== -1) {
-    // Already selected: remove it.
+    // Clicking a selected image deselects it.
     selectedImages.splice(selectedIndex, 1);
   } else {
-    // Do not allow more than two.
+    // If two images are selected, do nothing.
     if (selectedImages.length >= 2) {
       return;
     }
@@ -40,23 +46,28 @@ function toggleImageSelection(photo, category, tile) {
     });
   }
 
-  // Update the clicked tile.
-  const isSelected = selectedImages.some(
-    (image) => image.key === imageKey
-  );
+  // Update the visual state of every tile using its unique key.
+  const tiles = previewGrid.querySelectorAll('.style-preview__tile');
 
-  tile.style.border = isSelected
-    ? '3px solid #d6c5c7'
-    : '3px solid transparent';
+  tiles.forEach((currentTile) => {
+    const isSelected = selectedImages.some(
+      (image) => image.key === currentTile.dataset.imageKey
+    );
 
-  tile.setAttribute(
-    'aria-label',
-    `${photo.alt}${isSelected ? ', selected' : ''}`
-  );
+    currentTile.style.border = isSelected
+      ? '3px solid #839096'
+      : 'none';
 
-  // Tell the rest of the app that the selection changed.
+    currentTile.setAttribute('aria-checked', String(isSelected));
+    currentTile.setAttribute(
+      'aria-label',
+      `${currentTile.querySelector('img').alt}${isSelected ? ', selected' : ''}`
+    );
+  });
+
   notifySelectionChange();
 }
+
 
 // Build one square image tile for every photo in the category's list.
 function showImages(category) {
@@ -81,11 +92,12 @@ function showImages(category) {
       (image) => image.key === imageKey
     );
 
+    tile.dataset.imageKey = imageKey;
     
-    tile.setAttribute(
-      'aria-label',
-      `${photo.alt}${isSelected ? ', selected' : ''}`
-    );
+    tile.setAttribute('aria-checked', String(isSelected));
+    tile.style.border = isSelected
+      ? '3px solid #839096'
+      : 'none';
 
     const image = document.createElement('img');
     image.className = 'style-preview__image';
@@ -115,10 +127,11 @@ function showImages(category) {
   previewGrid.append(...tiles);
 }
 
-// Show images when a category is selected.
+// Clear previous selections when a new category is selected.
 categories.forEach((input) => {
   input.addEventListener('change', () => {
     if (input.checked) {
+      clearSelectedImages();
       showImages(input.value);
     }
   });
