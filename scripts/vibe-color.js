@@ -21,6 +21,11 @@ if (colorButton && colorInput && colorSwatch && colorValue) {
     setMainColor(colorInput.value);
   });
 
+  colorPicker.addEventListener('click', (event) => {
+    if (event.target.closest('button, input')) return;
+    colorInput.click();
+  });
+
   colorButton.addEventListener('click', async () => {
     if ('EyeDropper' in window) {
       try {

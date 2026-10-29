@@ -219,6 +219,7 @@ img {
 
 .color-picker {
   grid-area: color;
+  cursor: pointer;
   display: grid;
   grid-template-columns: 1fr auto;
   align-items: center;
