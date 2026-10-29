@@ -50,6 +50,11 @@
   font-weight: 400;
   letter-spacing: 9px;
   line-height: 1.45;
+  cursor: text;
+  &:focus {
+    outline: 2px dashed currentColor;
+    outline-offset: 6px;
+  }
 }
 .color-palette {
   position: relative;
@@ -59,6 +64,9 @@
   .refresh-button { position: absolute; left: calc(100% + 8px); top: 0; }
 }
 .palette-swatch {
+  border: 0;
+  padding: 0;
+  cursor: pointer;
   display: grid;
   flex: 1;
   place-items: center;
@@ -68,6 +76,7 @@
   font-family: Arial, sans-serif;
   font-size: clamp(16px, 2.7vw, 24px);
   font-weight: 700;
+  &:hover, &:focus-visible { filter: brightness(.96); outline: 2px solid currentColor; outline-offset: -2px; }
   // Palette colors follow the screenshot's visual samples.
   &--cream { background: $cream; }
   &--mint { background: $mint; }

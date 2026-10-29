@@ -254,6 +254,13 @@ img {
   font-size: 30px;
   line-height: 1;
 }
+.color-picker__input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
 
 .style-preview {
   grid-area: preview;
@@ -422,6 +429,11 @@ img {
   font-weight: 400;
   letter-spacing: 9px;
   line-height: 1.45;
+  cursor: text;
+}
+#project-name:focus {
+  outline: 2px dashed currentColor;
+  outline-offset: 6px;
 }
 
 .color-palette {
@@ -437,6 +449,9 @@ img {
 }
 
 .palette-swatch {
+  border: 0;
+  padding: 0;
+  cursor: pointer;
   display: grid;
   flex: 1;
   place-items: center;
@@ -446,6 +461,11 @@ img {
   font-family: Arial, sans-serif;
   font-size: clamp(16px, 2.7vw, 24px);
   font-weight: 700;
+}
+.palette-swatch:hover, .palette-swatch:focus-visible {
+  filter: brightness(0.96);
+  outline: 2px solid currentColor;
+  outline-offset: -2px;
 }
 .palette-swatch--cream {
   background: #e9e1bf;
@@ -922,5 +942,3 @@ img {
   color: #222;
   font: inherit;
 }
-
-/*# sourceMappingURL=Index.css.map */

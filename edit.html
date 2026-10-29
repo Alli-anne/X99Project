@@ -12,13 +12,13 @@
     </header>
     <main class="design-workspace">
       <section id="edit-page">
-        <h2 id="project-name">Project Name</h2>
+        <h2 id="project-name" contenteditable="true" role="textbox" aria-label="Project name">Project Name</h2>
         <div class="color-palette" aria-label="Project color palette">
-          <div class="palette-swatch palette-swatch--cream">DDD8C4</div>
-          <div class="palette-swatch palette-swatch--mint">A3C9A8</div>
-          <div class="palette-swatch palette-swatch--sage">84B59F</div>
-          <div class="palette-swatch palette-swatch--teal">69A297</div>
-          <button class="refresh-button" type="button" aria-label="Refresh palette">⟳</button>
+          <button class="palette-swatch palette-swatch--cream" type="button" data-color-role="primary" aria-label="Change primary color">DDD8C4</button>
+          <button class="palette-swatch palette-swatch--mint" type="button" data-color-role="secondary" aria-label="Change secondary color">A3C9A8</button>
+          <button class="palette-swatch palette-swatch--sage" type="button" data-color-role="accent" aria-label="Change accent color">84B59F</button>
+          <button class="palette-swatch palette-swatch--teal" type="button" data-color-role="background" aria-label="Change background color">69A297</button>
+          <button class="refresh-button" id="refresh-palette" type="button" aria-label="Try a different palette">⟳</button>
         </div>
         <div class="fonts-div">
           <div class="fonts">
@@ -105,7 +105,6 @@
           </div>
         </div>
 
-
       </details>
       <section id="edit-utility">
         <div>
@@ -122,7 +121,9 @@
     </main>
     <script type="module" src="scripts/show-image.js"></script>
     <script type="module" src="scripts/generate-design.js"></script>
+    <script type="module" src="scripts/palette-editor.js"></script>
     <script type="module" src="scripts/borders.js"></script>
+    <script type="module" src="scripts/project-name.js"></script>
     <footer></footer>
   </body>
 </html>

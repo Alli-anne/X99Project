@@ -1,6 +1,7 @@
 import { imagesByCategory } from './category-images.js';
 
 const designStorageKey = 'x99-generated-design';
+const readableText = '#1f2937';
 const imageLookup = new Map(
   Object.entries(imagesByCategory).flatMap(([category, photos]) =>
     photos.map((photo) => [`${category}-${photo.id}`, photo])
@@ -63,13 +64,17 @@ function applyDesign(board, options, design) {
   const pairing = options.fontPairings.find((item) => item.id === design.fontPairingId);
   if (!palette || !pairing) throw new Error('Saved design options are missing.');
 
-  const { colors } = palette;
-  board.style.backgroundColor = colors.surface;
-  board.style.color = colors.text;
-  document.body.style.backgroundColor = colors.background;
+  const savedPalette = JSON.parse(sessionStorage.getItem('x99-palette-colors') || 'null');
+  const colors = {
+    ...palette.colors,
+    ...(savedPalette || {}),
+    primary: sessionStorage.getItem('x99-main-color') || savedPalette?.primary || palette.colors.primary
+  };
+  board.style.backgroundColor = '#fffdfd';
+  board.style.color = readableText;
 
   const title = board.querySelector('#project-name');
-  title.textContent = `${palette.name}`;
+  title.textContent = sessionStorage.getItem('x99-project-name') || palette.name;
   title.style.fontFamily = `"${pairing.heading.family}", ${pairing.heading.fallback}`;
   title.style.fontWeight = pairing.heading.weight;
 
@@ -79,7 +84,7 @@ function applyDesign(board, options, design) {
   ];
   fontLists.forEach(([list, font]) => {
     list.style.fontFamily = `"${font.family}", ${font.fallback}`;
-    list.style.color = colors.onSecondary;
+    list.style.color = readableText;
     list.style.backgroundColor = colors.secondary;
     const weights = Array.isArray(font.weights)
       ? font.weights
@@ -112,7 +117,7 @@ function applyDesign(board, options, design) {
   board.querySelectorAll('.btn').forEach((button, index) => {
     const roleIndex = index % 3;
     button.style.backgroundColor = colors[roles[roleIndex]];
-    button.style.color = colors[textRoles[roleIndex]];
+    button.style.color = readableText;
   });
 
   const imageContainer = board.querySelector('#editing-selected-images');
@@ -129,6 +134,7 @@ function applyDesign(board, options, design) {
       return image;
     });
   imageContainer.replaceChildren(...images);
+  document.dispatchEvent(new CustomEvent('x99-design-applied', { detail: colors }));
 }
 
 async function generateFromVibe() {
