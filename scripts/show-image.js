@@ -1,6 +1,8 @@
 
 function showSelectedImages() {
-  const container = document.querySelector('#editing-selected-images');
+  const container = document.querySelector(
+    '#editing-selected-images'
+  );
 
   if (!container) return;
 
@@ -12,12 +14,18 @@ function showSelectedImages() {
 
   selectedImages.forEach((photo) => {
     const image = document.createElement('img');
+
     image.className = 'catagory-img';
     image.src = photo.url;
     image.alt = photo.alt;
 
     container.append(image);
   });
+
+  // Tell other scripts that the images are ready.
+  document.dispatchEvent(
+    new CustomEvent('finalimagesloaded')
+  );
 }
 
 showSelectedImages();

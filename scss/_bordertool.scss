@@ -6,8 +6,9 @@
 
 .border-popout {
   position: absolute;
+  top: 0;
   right: calc(-500% + 4px);
-  z-index: 100;
+  z-index: 200;
   width: 220px;
   max-width: calc(100vw - 32px);
   box-sizing: border-box;

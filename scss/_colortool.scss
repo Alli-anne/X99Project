@@ -1,0 +1,116 @@
+
+#colors {
+  &[aria-expanded="true"] {
+    outline: 2px solid #839096;
+    outline-offset: 2px;
+  }
+}
+
+.color-popout {
+  position: absolute;
+  top: 0;
+  right: calc(-500% + 4px);
+  z-index: 200;
+  width: 220px;
+  max-width: calc(100vw - 32px);
+  box-sizing: border-box;
+  padding: 18px;
+  background: #fff;
+  border: 1px solid #d6c5c7;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgb(0 0 0 / 15%);
+  color: #222;
+
+  &[hidden] {
+    display: none;
+  }
+}
+
+h3 {
+  margin: 0 0 16px;
+  font-size: 18px;
+}
+
+/* Custom color picker */
+#custom-overlay-color {
+  display: block;
+  width: 100%;
+  height: 38px;
+  padding: 3px;
+  margin-top: 8px;
+  border: 1px solid #d6c5c7;
+  border-radius: 6px;
+  background: #fff;
+  cursor: pointer;
+}
+
+/* Preset color palette */
+#overlay-colors {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.overlay-color {
+  display: block;
+  flex: 0 0 32px;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 2px solid #ddd;
+  border-radius: 50%;
+  cursor: pointer;
+  background-color: var(--swatch-color);
+  transition: transform 0.2s, outline 0.2s;
+
+  &:hover {
+    transform: scale(1.12);
+  }
+
+  &.active {
+    outline: 2px solid #333;
+    outline-offset: 3px;
+  }
+}
+
+/* Remove overlay button */
+.overlay-clear {
+  width: 100%;
+  padding: 9px;
+  margin-top: 16px;
+  border: 1px solid #d6c5c7;
+  border-radius: 6px;
+  background: #fff;
+  color: #222;
+  cursor: pointer;
+
+  &:hover {
+    background: #f4f0eb;
+  }
+}
+
+/* Image overlay wrapper */
+.color-overlay-wrapper {
+  position: relative;
+  display: inline-block;
+  max-width: 100%;
+  line-height: 0;
+  overflow: hidden;
+  border-radius: inherit;
+}
+
+.color-overlay-wrapper img {
+  display: block;
+  max-width: 100%;
+}
+
+.color-overlay-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: transparent;
+  border-radius: inherit;
+}

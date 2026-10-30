@@ -59,92 +59,173 @@
           <button class="tools" id="boarders" type="button" aria-label="Borders">◕</button>
         </div>
         
+        <div id="border-popout" class="border-popout" hidden>
+          <h3>Border Settings</h3>
+        
+          <div class="border-control">
+            <label for="border-target">Apply border to:</label>
+            <select id="border-target">
+              <option value="images">Images</option>
+              <option value="buttons">Buttons</option>
+            </select>
+          </div>
+        
+          <label class="border-option">
+            <input type="checkbox" id="border-enabled">
+            Show border
+          </label>
+        
+          <!-- Border color palette -->
+          <div class="border-control">
+            <label>Border color:</label>
+        
+            <div id="border-colors" class="border-colors">
+        
+              <button type="button"
+                class="border-color active"
+                data-color="#DDD8C4"
+                style="--swatch-color: #DDD8C4"
+                aria-label="Cream"
+                aria-pressed="true">
+              </button>
+        
+              <button type="button"
+                class="border-color"
+                data-color="#A3C9A8"
+                style="--swatch-color: #A3C9A8"
+                aria-label="Mint"
+                aria-pressed="false">
+              </button>
+        
+              <button type="button"
+                class="border-color"
+                data-color="#84B59F"
+                style="--swatch-color: #84B59F"
+                aria-label="Sage"
+                aria-pressed="false">
+              </button>
+        
+              <button type="button"
+                class="border-color"
+                data-color="#69A297"
+                style="--swatch-color: #69A297"
+                aria-label="Teal"
+                aria-pressed="false">
+              </button>
+        
+            </div>
+          </div>
+        
+          <div class="border-control">
+            <label for="border-radius">
+              Corner rounding:
+              <output id="border-radius-value">0px</output>
+            </label>
+        
+            <input type="range"
+              id="border-radius"
+              min="0"
+              max="100"
+              value="0">
+          </div>
+        
+          <div class="border-control">
+            <label for="border-thickness">
+              Border thickness:
+              <output id="border-thickness-value">2px</output>
+            </label>
+        
+            <input type="range"
+              id="border-thickness"
+              min="1"
+              max="12"
+              value="2">
+          </div>
+        
+        </div>
+
 
         
-      <div id="border-popout" class="border-popout" hidden>
-        <h3>Border Settings</h3>
-      
-        <div class="border-control">
-          <label for="border-target">Apply border to:</label>
-          <select id="border-target">
-            <option value="images">Images</option>
-            <option value="buttons">Buttons</option>
-          </select>
-        </div>
-      
-        <label class="border-option">
-          <input type="checkbox" id="border-enabled">
-          Show border
-        </label>
-      
-        <!-- Border color palette -->
-        <div class="border-control">
-          <label>Border color:</label>
-      
-          <div id="border-colors" class="border-colors">
-      
-            <button type="button"
-              class="border-color active"
-              data-color="#DDD8C4"
-              style="--swatch-color: #DDD8C4"
-              aria-label="Cream"
-              aria-pressed="true">
-            </button>
-      
-            <button type="button"
-              class="border-color"
-              data-color="#A3C9A8"
-              style="--swatch-color: #A3C9A8"
-              aria-label="Mint"
-              aria-pressed="false">
-            </button>
-      
-            <button type="button"
-              class="border-color"
-              data-color="#84B59F"
-              style="--swatch-color: #84B59F"
-              aria-label="Sage"
-              aria-pressed="false">
-            </button>
-      
-            <button type="button"
-              class="border-color"
-              data-color="#69A297"
-              style="--swatch-color: #69A297"
-              aria-label="Teal"
-              aria-pressed="false">
-            </button>
-      
+        <!-- Color overlay popup -->
+        <div id="color-popout" class="border-popout color-popout" hidden>
+          <h3>Image Color Settings</h3>
+        
+          <!-- Preset colors -->
+          <div class="border-control">
+            <label>Project colors:</label>
+        
+            <div id="overlay-colors" class="border-colors">
+        
+              <button type="button"
+                class="overlay-color active"
+                aria-label="Primary project color"
+                aria-pressed="true">
+              </button>
+        
+              <button type="button"
+                class="overlay-color"
+                aria-label="Secondary project color"
+                aria-pressed="false">
+              </button>
+        
+              <button type="button"
+                class="overlay-color"
+                aria-label="Accent project color"
+                aria-pressed="false">
+              </button>
+        
+              <button type="button"
+                class="overlay-color"
+                aria-label="Background project color"
+                aria-pressed="false">
+              </button>
+        
+            </div>
           </div>
-        </div>
-      
-        <div class="border-control">
-          <label for="border-radius">
-            Corner rounding:
-            <output id="border-radius-value">0px</output>
+        
+          <!-- Custom color picker -->
+          <div class="border-control">
+            <label for="custom-overlay-color">
+              Custom color:
+            </label>
+        
+            <input
+              type="color"
+              id="custom-overlay-color"
+              value="#DDD8C4">
+          </div>
+        
+          <!-- Enable overlay -->
+          <label class="border-option">
+            <input type="checkbox" id="overlay-enabled">
+            Show color overlay
           </label>
-      
-          <input type="range"
-            id="border-radius"
-            min="0"
-            max="100"
-            value="0">
+        
+          <!-- Opacity slider -->
+          <div class="border-control">
+            <label for="overlay-opacity">
+              Overlay opacity:
+              <output id="overlay-opacity-value">30%</output>
+            </label>
+        
+            <input
+              type="range"
+              id="overlay-opacity"
+              min="0"
+              max="100"
+              value="30">
+          </div>
+        
+          <!-- Remove overlay -->
+          <button
+            type="button"
+            id="clear-overlay"
+            class="overlay-clear">
+            Remove overlay
+          </button>
+        
         </div>
-      
-        <div class="border-control">
-          <label for="border-thickness">
-            Border thickness:
-            <output id="border-thickness-value">2px</output>
-          </label>
-      
-          <input type="range"
-            id="border-thickness"
-            min="1"
-            max="12"
-            value="2">
-        </div>
-      
-      </div>
+        
       
 
       </details>
@@ -166,6 +247,7 @@
     <script type="module" src="scripts/palette-editor.js"></script>
     <script type="module" src="scripts/borders.js"></script>
     <script type="module" src="scripts/project-name.js"></script>
+    <script type="module" src="scripts/color-tool.js"></script>
     <footer></footer>
   </body>
 </html>
