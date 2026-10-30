@@ -60,50 +60,92 @@
         </div>
         
 
-        <div id="border-popout" class="border-popout" hidden>
-          <h3>Border Settings</h3>
-
-          <div class="border-control">
-            <label for="border-target">Apply border to:</label>
-            <select id="border-target">
-              <option value="images">Images</option>
-              <option value="buttons">Buttons</option>
-            </select>
-          </div>
         
-          <label class="border-option">
-            <input type="checkbox" id="border-enabled">
-            Show border
-          </label>
-        
-          <div class="border-control">
-            <label for="border-radius">
-              Corner rounding:
-              <output id="border-radius-value">0px</output>
-            </label>
-            <input
-              type="range"
-              id="border-radius"
-              min="0"
-              max="100"
-              value="0"
-            >
-          </div>
-        
-          <div class="border-control">
-            <label for="border-thickness">
-              Border thickness:
-              <output id="border-thickness-value">2px</output>
-            </label>
-            <input
-              type="range"
-              id="border-thickness"
-              min="1"
-              max="12"
-              value="2"
-            >
+      <div id="border-popout" class="border-popout" hidden>
+        <h3>Border Settings</h3>
+      
+        <div class="border-control">
+          <label for="border-target">Apply border to:</label>
+          <select id="border-target">
+            <option value="images">Images</option>
+            <option value="buttons">Buttons</option>
+          </select>
+        </div>
+      
+        <label class="border-option">
+          <input type="checkbox" id="border-enabled">
+          Show border
+        </label>
+      
+        <!-- Border color palette -->
+        <div class="border-control">
+          <label>Border color:</label>
+      
+          <div id="border-colors" class="border-colors">
+      
+            <button type="button"
+              class="border-color active"
+              data-color="#DDD8C4"
+              style="--swatch-color: #DDD8C4"
+              aria-label="Cream"
+              aria-pressed="true">
+            </button>
+      
+            <button type="button"
+              class="border-color"
+              data-color="#A3C9A8"
+              style="--swatch-color: #A3C9A8"
+              aria-label="Mint"
+              aria-pressed="false">
+            </button>
+      
+            <button type="button"
+              class="border-color"
+              data-color="#84B59F"
+              style="--swatch-color: #84B59F"
+              aria-label="Sage"
+              aria-pressed="false">
+            </button>
+      
+            <button type="button"
+              class="border-color"
+              data-color="#69A297"
+              style="--swatch-color: #69A297"
+              aria-label="Teal"
+              aria-pressed="false">
+            </button>
+      
           </div>
         </div>
+      
+        <div class="border-control">
+          <label for="border-radius">
+            Corner rounding:
+            <output id="border-radius-value">0px</output>
+          </label>
+      
+          <input type="range"
+            id="border-radius"
+            min="0"
+            max="100"
+            value="0">
+        </div>
+      
+        <div class="border-control">
+          <label for="border-thickness">
+            Border thickness:
+            <output id="border-thickness-value">2px</output>
+          </label>
+      
+          <input type="range"
+            id="border-thickness"
+            min="1"
+            max="12"
+            value="2">
+        </div>
+      
+      </div>
+      
 
       </details>
       <section id="edit-utility">

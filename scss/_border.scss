@@ -82,3 +82,31 @@
     font: inherit;
   }
 }
+
+/* Border color palette */
+.border-colors {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.border-color {
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 2px solid #ddd;
+  border-radius: 50%;
+  background-color: var(--swatch-color);
+  cursor: pointer;
+  transition: transform 0.2s, outline 0.2s;
+
+  &:hover {
+    transform: scale(1.12);
+  }
+
+  &.active {
+    outline: 2px solid #333;
+    outline-offset: 3px;
+  }
+}

@@ -10,6 +10,9 @@ const thicknessValue = document.querySelector('#border-thickness-value');
 const imageContainer = document.querySelector('#editing-selected-images');
 const buttonContainer = document.querySelector('.button-div');
 
+// Border color elements
+const borderColors = document.querySelectorAll('.border-color');
+
 if (
   borderButton &&
   borderPanel &&
@@ -20,7 +23,10 @@ if (
   imageContainer &&
   buttonContainer
 ) {
-  // Open and close the border settings pop-out.
+  // Default border color
+  let selectedBorderColor = '#DDD8C4';
+
+  // Open and close border settings.
   borderButton.setAttribute('aria-expanded', 'false');
 
   borderButton.addEventListener('click', () => {
@@ -30,7 +36,45 @@ if (
     borderButton.setAttribute('aria-expanded', String(willOpen));
   });
 
-  // Apply the current settings to the chosen target.
+  // Get the current colors from the main project palette.
+  function updateBorderPalette() {
+    const mainPaletteButtons = document.querySelectorAll(
+      '.color-palette .palette-swatch'
+    );
+  
+    borderColors.forEach((colorButton, index) => {
+      const mainButton = mainPaletteButtons[index];
+  
+      if (!mainButton) return;
+  
+      // Get the actual displayed color.
+      const color = getComputedStyle(mainButton).backgroundColor;
+  
+      // Update the popup swatch.
+      colorButton.style.backgroundColor = color;
+  
+      // Store the exact color for border application.
+      colorButton.dataset.color = color;
+    });
+  }
+
+  // Watch the main palette for color changes.
+  const paletteContainer = document.querySelector('.color-palette');
+  
+  if (paletteContainer) {
+    const paletteObserver = new MutationObserver(() => {
+      updateBorderPalette();
+    });
+  
+    paletteObserver.observe(paletteContainer, {
+      attributes: true,
+      childList: true,
+      subtree: true,
+      characterData: true
+    });
+  }
+  
+  // Apply border settings to selected elements.
   function applyBorderSettings() {
     const enabled = borderEnabled.checked;
     const radius = `${borderRadius.value}px`;
@@ -45,20 +89,38 @@ if (
 
     targets.forEach((element) => {
       element.style.border = enabled
-        ? `${thickness} solid black`
+        ? `${thickness} solid ${selectedBorderColor}`
         : 'none';
 
       element.style.borderRadius = radius;
     });
   }
 
-  // Update the preview when a setting changes.
+  // Let users select one of the four palette colors.
+  borderColors.forEach((colorButton) => {
+    colorButton.addEventListener('click', () => {
+      selectedBorderColor = colorButton.dataset.color;
+
+      // Update the selected color indicator.
+      borderColors.forEach((button) => {
+        const isSelected = button === colorButton;
+
+        button.classList.toggle('active', isSelected);
+        button.setAttribute('aria-pressed', String(isSelected));
+      });
+
+      // Immediately update the border preview.
+      applyBorderSettings();
+    });
+  });
+
+  // Update border when settings change.
   borderEnabled.addEventListener('change', applyBorderSettings);
   borderRadius.addEventListener('input', applyBorderSettings);
   borderThickness.addEventListener('input', applyBorderSettings);
   borderTarget.addEventListener('change', applyBorderSettings);
 
-  // Reapply settings when images are added to the preview.
+  // Reapply settings when images are added.
   const observer = new MutationObserver(() => {
     applyBorderSettings();
   });
@@ -67,6 +129,8 @@ if (
     childList: true
   });
 
-  // Initialize labels and styles.
+  updateBorderPalette();
+
+  // Initialize border settings.
   applyBorderSettings();
 }
