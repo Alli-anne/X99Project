@@ -1,5 +1,4 @@
 const paletteKey = 'x99-palette-colors';
-const readableText = '#1f2937';
 const roles = ['primary', 'secondary', 'accent', 'background'];
 
 const fallbackPalettes = [
@@ -11,6 +10,48 @@ const fallbackPalettes = [
 
 const swatches = [...document.querySelectorAll('.palette-swatch[data-color-role]')];
 const refreshButton = document.querySelector('#refresh-palette');
+const accessibilityWarning = document.querySelector('#accessibility-warning');
+
+function hexToRgb(hex) {
+  const value = hex.replace('#', '');
+  const full = value.length === 3 ? value.split('').map((part) => part + part).join('') : value;
+  return [0, 2, 4].map((index) => Number.parseInt(full.slice(index, index + 2), 16) / 255);
+}
+
+function luminance(hex) {
+  return hexToRgb(hex).map((channel) =>
+    channel <= 0.03928 ? channel / 12.92 : ((channel + 0.055) / 1.055) ** 2.4
+  ).reduce((total, channel, index) => total + channel * [0.2126, 0.7152, 0.0722][index], 0);
+}
+
+function contrastRatio(first, second) {
+  const light = Math.max(luminance(first), luminance(second));
+  const dark = Math.min(luminance(first), luminance(second));
+  return (light + 0.05) / (dark + 0.05);
+}
+
+function paletteTextColor(background, colors) {
+  const candidates = roles.map((role) => colors[role]);
+  return candidates.sort((first, second) =>
+    contrastRatio(second, background) - contrastRatio(first, background)
+  )[0];
+}
+
+function updateAccessibilityWarning(colors) {
+  if (!accessibilityWarning) return;
+  const combinations = [
+    [colors.secondary, paletteTextColor(colors.secondary, colors)],
+    [colors.primary, paletteTextColor(colors.primary, colors)],
+    [colors.accent, paletteTextColor(colors.accent, colors)]
+  ];
+  const hasLowContrast = combinations.some(([background, foreground]) =>
+    contrastRatio(background, foreground) < 4.5
+  );
+  accessibilityWarning.hidden = !hasLowContrast;
+  accessibilityWarning.textContent = hasLowContrast
+    ? 'Warning: some palette colors may be difficult to read together. Try a different palette or choose a stronger color contrast.'
+    : '';
+}
 
 function readPalette() {
   try {
@@ -40,20 +81,22 @@ function applyPalette(palette, save = true) {
   const board = document.querySelector('#edit-page');
   if (board) {
     board.style.backgroundColor = '#fffdfd';
-    board.style.color = readableText;
+    board.style.color = paletteTextColor('#fffdfd', colors);
     board.querySelectorAll('.fonts ul').forEach((list) => {
       list.style.backgroundColor = colors.secondary;
-      list.style.color = readableText;
+      list.style.color = paletteTextColor(colors.secondary, colors);
     });
     board.querySelectorAll('.fonts h3').forEach((heading) => {
-      heading.style.color = readableText;
+      heading.style.color = paletteTextColor('#fffdfd', colors);
     });
     board.querySelectorAll('.btn').forEach((button, index) => {
       const role = roles[index % 3];
       button.style.backgroundColor = colors[role];
-      button.style.color = readableText;
+      button.style.color = paletteTextColor(colors[role], colors);
     });
   }
+
+  updateAccessibilityWarning(colors);
 
 
   if (save) sessionStorage.setItem(paletteKey, JSON.stringify(colors));

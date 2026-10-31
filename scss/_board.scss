@@ -63,6 +63,15 @@
   margin: 0 auto 12px;
   .refresh-button { position: absolute; left: calc(100% + 8px); top: 0; }
 }
+.accessibility-warning {
+  max-width: 75%;
+  margin: 8px auto 18px;
+  color: #8a3b12;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.4;
+  text-align: center;
+}
 .palette-swatch {
   border: 0;
   padding: 0;

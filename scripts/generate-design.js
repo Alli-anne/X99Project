@@ -1,7 +1,29 @@
 import { imagesByCategory } from './category-images.js';
 
 const designStorageKey = 'x99-generated-design';
-const readableText = '#1f2937';
+const paletteRoles = ['primary', 'secondary', 'accent', 'background'];
+
+function paletteLuminance(hex) {
+  const value = hex.replace('#', '');
+  const full = value.length === 3 ? value.split('').map((part) => part + part).join('') : value;
+  return [0, 2, 4].map((index) => Number.parseInt(full.slice(index, index + 2), 16) / 255)
+    .map((channel) => channel <= 0.03928 ? channel / 12.92 : ((channel + 0.055) / 1.055) ** 2.4)
+    .reduce((total, channel, index) => total + channel * [0.2126, 0.7152, 0.0722][index], 0);
+}
+
+function readablePaletteColor(background, colors) {
+  return paletteRoles
+    .map((role) => colors[role])
+    .sort((first, second) => {
+      const contrast = (color) => {
+        const firstLuminance = paletteLuminance(background);
+        const secondLuminance = paletteLuminance(color);
+        return (Math.max(firstLuminance, secondLuminance) + 0.05) /
+          (Math.min(firstLuminance, secondLuminance) + 0.05);
+      };
+      return contrast(second) - contrast(first);
+    })[0];
+}
 const imageLookup = new Map(
   Object.entries(imagesByCategory).flatMap(([category, photos]) =>
     photos.map((photo) => [`${category}-${photo.id}`, photo])
@@ -71,7 +93,7 @@ function applyDesign(board, options, design) {
     primary: sessionStorage.getItem('x99-main-color') || savedPalette?.primary || palette.colors.primary
   };
   board.style.backgroundColor = '#fffdfd';
-  board.style.color = readableText;
+  board.style.color = readablePaletteColor('#fffdfd', colors);
 
   const title = board.querySelector('#project-name');
   title.textContent = sessionStorage.getItem('x99-project-name') || palette.name;
@@ -84,7 +106,7 @@ function applyDesign(board, options, design) {
   ];
   fontLists.forEach(([list, font]) => {
     list.style.fontFamily = `"${font.family}", ${font.fallback}`;
-    list.style.color = readableText;
+    list.style.color = readablePaletteColor(colors.secondary, colors);
     list.style.backgroundColor = colors.secondary;
     const weights = Array.isArray(font.weights)
       ? font.weights
@@ -117,7 +139,7 @@ function applyDesign(board, options, design) {
   board.querySelectorAll('.btn').forEach((button, index) => {
     const roleIndex = index % 3;
     button.style.backgroundColor = colors[roles[roleIndex]];
-    button.style.color = readableText;
+    button.style.color = readablePaletteColor(colors[roles[roleIndex]], colors);
   });
 
   const imageContainer = board.querySelector('#editing-selected-images');
