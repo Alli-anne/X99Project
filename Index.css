@@ -464,7 +464,7 @@ img {
   padding: 0;
   cursor: pointer;
   display: grid;
-  flex: 1;
+  width: 100%;
   place-items: center;
   min-width: 0;
   min-height: 158px;
@@ -489,6 +489,29 @@ img {
 }
 .palette-swatch--teal {
   background: #6eafa2;
+}
+
+.palette-slot {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  display: flex;
+}
+
+.palette-lock {
+  position: absolute;
+  right: 8px;
+  bottom: 8px;
+  border: 0;
+  padding: 2px 5px;
+  background: rgba(0, 0, 0, 0.3333333333);
+  color: white;
+  cursor: pointer;
+  font-size: 16px;
+  line-height: 1;
+}
+.palette-lock[aria-pressed=true] {
+  background: rgba(0, 0, 0, 0.7333333333);
 }
 
 .fonts-div {

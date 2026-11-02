@@ -1,6 +1,7 @@
 import { imagesByCategory } from './category-images.js';
 
 const designStorageKey = 'x99-generated-design';
+const fontOverridesKey = 'x99-font-overrides';
 const paletteRoles = ['primary', 'secondary', 'accent', 'background'];
 
 function paletteLuminance(hex) {
@@ -23,6 +24,10 @@ function readablePaletteColor(background, colors) {
       };
       return contrast(second) - contrast(first);
     })[0];
+}
+
+function blackOrWhite(hex) {
+  return paletteLuminance(hex) > 0.45 ? '#000000' : '#ffffff';
 }
 const imageLookup = new Map(
   Object.entries(imagesByCategory).flatMap(([category, photos]) =>
@@ -81,43 +86,60 @@ function getSavedDesign() {
   return JSON.parse(sessionStorage.getItem(designStorageKey) || 'null');
 }
 
+function getFontOverrides() {
+  return JSON.parse(sessionStorage.getItem(fontOverridesKey) || '{}');
+}
+
+function fontCssUrl(fonts) {
+  const families = fonts.map((font) => {
+    const family = encodeURIComponent(font.family).replace(/%20/g, '+');
+    const weights = Array.isArray(font.weights) && font.weights.length
+      ? font.weights
+      : [font.weight];
+    return `family=${family}:wght@${weights.join(';')}`;
+  });
+  return `https://fonts.googleapis.com/css2?${families.join('&')}&display=swap`;
+}
+
 function applyDesign(board, options, design) {
   const palette = options.palettes.find((item) => item.id === design.paletteId);
   const pairing = options.fontPairings.find((item) => item.id === design.fontPairingId);
   if (!palette || !pairing) throw new Error('Saved design options are missing.');
 
   const savedPalette = JSON.parse(sessionStorage.getItem('x99-palette-colors') || 'null');
+  const fontOverrides = getFontOverrides();
+  const headingFont = fontOverrides.heading || pairing.heading;
+  const bodyFont = fontOverrides.body || pairing.body;
   const colors = {
     ...palette.colors,
     ...(savedPalette || {}),
-    primary: sessionStorage.getItem('x99-main-color') || savedPalette?.primary || palette.colors.primary
+    primary: savedPalette?.primary || sessionStorage.getItem('x99-main-color') || palette.colors.primary
   };
   board.style.backgroundColor = '#fffdfd';
   board.style.color = readablePaletteColor('#fffdfd', colors);
 
   const title = board.querySelector('#project-name');
   title.textContent = sessionStorage.getItem('x99-project-name') || palette.name;
-  title.style.fontFamily = `"${pairing.heading.family}", ${pairing.heading.fallback}`;
-  title.style.fontWeight = pairing.heading.weight;
+  title.style.fontFamily = `"${headingFont.family}", ${headingFont.fallback}`;
+  title.style.fontWeight = headingFont.weight;
 
   const fontLists = [
-    [board.querySelector('#header-font'), pairing.heading],
-    [board.querySelector('#body-font'), pairing.body]
+    [board.querySelector('#header-font'), headingFont],
+    [board.querySelector('#body-font'), bodyFont]
   ];
   fontLists.forEach(([list, font]) => {
     list.style.fontFamily = `"${font.family}", ${font.fallback}`;
     list.style.color = readablePaletteColor(colors.secondary, colors);
     list.style.backgroundColor = colors.secondary;
     const weights = Array.isArray(font.weights)
-      ? font.weights
-      : [font.weight];
-    list.querySelectorAll('li').forEach((item, index) => {
-      const weight = weights[index];
-      item.hidden = weight === undefined;
-      if (weight === undefined) return;
+      ? font.weights.filter((weight) => Number.isFinite(weight))
+      : (Number.isFinite(font.weight) ? [font.weight] : []);
+    list.replaceChildren(...weights.map((weight) => {
+      const item = document.createElement('li');
       item.textContent = font.family;
       item.style.fontWeight = weight;
-    });
+      return item;
+    }));
   });
 
   let fontStylesheet = document.querySelector('#generated-fonts');
@@ -127,13 +149,13 @@ function applyDesign(board, options, design) {
     fontStylesheet.rel = 'stylesheet';
     document.head.append(fontStylesheet);
   }
-  fontStylesheet.href = pairing.googleFontsCssUrl;
+  fontStylesheet.href = fontCssUrl([headingFont, bodyFont]);
 
   const roles = ['primary', 'secondary', 'accent', 'background'];
   const textRoles = ['onPrimary', 'onSecondary', 'onAccent', 'text'];
   board.querySelectorAll('.palette-swatch').forEach((swatch, index) => {
     swatch.style.backgroundColor = colors[roles[index]];
-    swatch.style.color = colors[textRoles[index]];
+    swatch.style.color = blackOrWhite(colors[roles[index]]);
     swatch.textContent = colors[roles[index]].replace('#', '');
   });
   board.querySelectorAll('.btn').forEach((button, index) => {
@@ -198,5 +220,36 @@ async function applySavedDesign() {
   }
 }
 
+async function setupFontRefresh() {
+  const buttons = [...document.querySelectorAll('#edit-page .fonts h3 .refresh-button')];
+  if (!buttons.length) return;
+  buttons.forEach((button, index) => {
+    button.addEventListener('click', async () => {
+      try {
+        const options = await loadDesignOptions();
+        const design = getSavedDesign();
+        if (!design) return;
+        const pairing = options.fontPairings.find((item) => item.id === design.fontPairingId);
+        const currentOverrides = getFontOverrides();
+        const currentFamily = index === 0
+          ? currentOverrides.heading?.family || pairing.heading.family
+          : currentOverrides.body?.family || pairing.body.family;
+        const candidates = options.fontPairings
+          .map((item) => index === 0 ? item.heading : item.body)
+          .filter((font) => font.family !== currentFamily);
+        const nextFont = randomItem(candidates);
+        sessionStorage.setItem(fontOverridesKey, JSON.stringify({
+          ...currentOverrides,
+          [index === 0 ? 'heading' : 'body']: nextFont
+        }));
+        await applySavedDesign();
+      } catch (error) {
+        console.error('Could not refresh font.', error);
+      }
+    });
+  });
+}
+
 generateFromVibe();
 applySavedDesign();
+setupFontRefresh();

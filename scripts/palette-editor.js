@@ -1,5 +1,7 @@
 const paletteKey = 'x99-palette-colors';
+const locksKey = 'x99-palette-locks';
 const roles = ['primary', 'secondary', 'accent', 'background'];
+const defaultLocks = { primary: true };
 
 const fallbackPalettes = [
   { primary: '#DDD8C4', secondary: '#A3C9A8', accent: '#84B59F', background: '#69A297' },
@@ -11,6 +13,7 @@ const fallbackPalettes = [
 const swatches = [...document.querySelectorAll('.palette-swatch[data-color-role]')];
 const refreshButton = document.querySelector('#refresh-palette');
 const accessibilityWarning = document.querySelector('#accessibility-warning');
+const lockButtons = [...document.querySelectorAll('.palette-lock[data-lock-role]')];
 
 function hexToRgb(hex) {
   const value = hex.replace('#', '');
@@ -65,16 +68,19 @@ function normalizeColor(value) {
   return value.toUpperCase();
 }
 
+function blackOrWhite(hex) {
+  return luminance(hex) > 0.45 ? '#000000' : '#ffffff';
+}
+
 function applyPalette(palette, save = true) {
   const colors = Object.fromEntries(
     roles.map((role) => [role, normalizeColor(palette[role])])
   );
-  const chosenMainColor = sessionStorage.getItem('x99-main-color');
-  if (chosenMainColor) colors.primary = normalizeColor(chosenMainColor);
 
   swatches.forEach((swatch) => {
     const color = colors[swatch.dataset.colorRole];
     swatch.style.backgroundColor = color;
+    swatch.style.color = blackOrWhite(color);
     swatch.textContent = color.replace('#', '');
   });
 
@@ -105,16 +111,23 @@ function applyPalette(palette, save = true) {
 
 function randomPalette() {
   const current = readPalette();
+  const locks = { ...defaultLocks, ...JSON.parse(sessionStorage.getItem(locksKey) || '{}') };
   const choices = fallbackPalettes.filter((palette) =>
     !current || palette.primary !== current.primary
   );
   const next = choices[Math.floor(Math.random() * choices.length)] || fallbackPalettes[0];
   const displayedBackground = swatches.find((swatch) => swatch.dataset.colorRole === 'background')?.textContent;
-  return {
+  const nextPalette = {
     ...next,
-    primary: sessionStorage.getItem('x99-main-color') || current?.primary || next.primary,
+    primary: locks.primary
+      ? (current?.primary || sessionStorage.getItem('x99-main-color') || next.primary)
+      : next.primary,
     background: current?.background || (displayedBackground ? `#${displayedBackground.trim().replace('#', '')}` : next.background)
   };
+  roles.forEach((role) => {
+    if (locks[role] && current?.[role]) nextPalette[role] = current[role];
+  });
+  return nextPalette;
 }
 
 swatches.forEach((swatch) => {
@@ -137,8 +150,28 @@ swatches.forEach((swatch) => {
 
 refreshButton?.addEventListener('click', () => applyPalette(randomPalette()));
 
+lockButtons.forEach((button) => {
+  button.addEventListener('click', (event) => {
+    event.stopPropagation();
+    const locks = { ...defaultLocks, ...JSON.parse(sessionStorage.getItem(locksKey) || '{}') };
+    const role = button.dataset.lockRole;
+    locks[role] = !locks[role];
+    button.setAttribute('aria-pressed', String(locks[role]));
+    button.setAttribute('aria-label', `${locks[role] ? 'Unlock' : 'Lock'} ${role} color`);
+    button.textContent = locks[role] ? '🔒' : '♧';
+    sessionStorage.setItem(locksKey, JSON.stringify(locks));
+  });
+});
+
 const saved = readPalette();
 if (saved) applyPalette(saved, false);
+
+const savedLocks = { ...defaultLocks, ...JSON.parse(sessionStorage.getItem(locksKey) || '{}') };
+lockButtons.forEach((button) => {
+  const locked = Boolean(savedLocks[button.dataset.lockRole]);
+  button.setAttribute('aria-pressed', String(locked));
+  button.textContent = locked ? '🔒' : '🔓';
+});
 
 document.addEventListener('x99-design-applied', (event) => {
   if (!readPalette()) applyPalette(event.detail, false);
