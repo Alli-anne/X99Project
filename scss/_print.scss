@@ -1,0 +1,35 @@
+@media print {
+  @page { margin: 0.4in; }
+
+  body.final-page {
+    background: #fff;
+  }
+
+  body.final-page #main-header,
+  body.final-page #final-options {
+    display: none !important;
+  }
+
+  body.final-page .design-workspace {
+    display: block;
+    width: 100%;
+    max-width: none;
+    padding: 0;
+  }
+
+  body.final-page #final-page {
+    display: flex !important;
+    width: 100%;
+    min-height: auto;
+    margin: 0;
+    padding: 24px;
+    border: 0;
+    box-shadow: none;
+    background: #fff;
+  }
+
+  body.final-page .finish-edit-btn,
+  body.final-page .board-edit-link {
+    display: none !important;
+  }
+}

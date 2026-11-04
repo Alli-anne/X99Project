@@ -64,6 +64,31 @@ function readPalette() {
   }
 }
 
+function readLocks() {
+  try {
+    return { ...defaultLocks, ...JSON.parse(sessionStorage.getItem(locksKey) || '{}') };
+  } catch {
+    return { ...defaultLocks };
+  }
+}
+
+function syncLockState() {
+  const locks = readLocks();
+  swatches.forEach((swatch) => {
+    const locked = Boolean(locks[swatch.dataset.colorRole]);
+    swatch.classList.toggle('is-locked', locked);
+    swatch.setAttribute('aria-disabled', String(locked));
+  });
+  lockButtons.forEach((button) => {
+    const locked = Boolean(locks[button.dataset.lockRole]);
+    button.setAttribute('aria-pressed', String(locked));
+    button.setAttribute('aria-label', `${locked ? 'Unlock' : 'Lock'} ${button.dataset.lockRole} color`);
+    button.innerHTML = locked
+      ? '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="10" width="14" height="10" rx="2"></rect><path d="M8 10V7a4 4 0 0 1 8 0v3"></path></svg>'
+      : '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="10" width="14" height="10" rx="2"></rect><path d="M8 10V7a4 4 0 0 1 7-2"></path></svg>';
+  });
+}
+
 function normalizeColor(value) {
   return value.toUpperCase();
 }
@@ -106,23 +131,23 @@ function applyPalette(palette, save = true) {
 
 
   if (save) sessionStorage.setItem(paletteKey, JSON.stringify(colors));
+  syncLockState();
   return colors;
 }
 
 function randomPalette() {
   const current = readPalette();
-  const locks = { ...defaultLocks, ...JSON.parse(sessionStorage.getItem(locksKey) || '{}') };
+  const locks = readLocks();
   const choices = fallbackPalettes.filter((palette) =>
     !current || palette.primary !== current.primary
   );
   const next = choices[Math.floor(Math.random() * choices.length)] || fallbackPalettes[0];
-  const displayedBackground = swatches.find((swatch) => swatch.dataset.colorRole === 'background')?.textContent;
   const nextPalette = {
     ...next,
     primary: locks.primary
       ? (current?.primary || sessionStorage.getItem('x99-main-color') || next.primary)
       : next.primary,
-    background: current?.background || (displayedBackground ? `#${displayedBackground.trim().replace('#', '')}` : next.background)
+    background: next.background
   };
   roles.forEach((role) => {
     if (locks[role] && current?.[role]) nextPalette[role] = current[role];
@@ -132,6 +157,7 @@ function randomPalette() {
 
 swatches.forEach((swatch) => {
   swatch.addEventListener('click', () => {
+    if (readLocks()[swatch.dataset.colorRole]) return;
     const input = document.createElement('input');
     input.type = 'color';
     input.value = `#${swatch.textContent.trim().replace('#', '')}`;
@@ -153,25 +179,20 @@ refreshButton?.addEventListener('click', () => applyPalette(randomPalette()));
 lockButtons.forEach((button) => {
   button.addEventListener('click', (event) => {
     event.stopPropagation();
-    const locks = { ...defaultLocks, ...JSON.parse(sessionStorage.getItem(locksKey) || '{}') };
+    const locks = readLocks();
     const role = button.dataset.lockRole;
     locks[role] = !locks[role];
     button.setAttribute('aria-pressed', String(locks[role]));
     button.setAttribute('aria-label', `${locks[role] ? 'Unlock' : 'Lock'} ${role} color`);
-    button.textContent = locks[role] ? '🔒' : '♧';
     sessionStorage.setItem(locksKey, JSON.stringify(locks));
+    syncLockState();
   });
 });
 
 const saved = readPalette();
 if (saved) applyPalette(saved, false);
 
-const savedLocks = { ...defaultLocks, ...JSON.parse(sessionStorage.getItem(locksKey) || '{}') };
-lockButtons.forEach((button) => {
-  const locked = Boolean(savedLocks[button.dataset.lockRole]);
-  button.setAttribute('aria-pressed', String(locked));
-  button.textContent = locked ? '🔒' : '🔓';
-});
+syncLockState();
 
 document.addEventListener('x99-design-applied', (event) => {
   if (!readPalette()) applyPalette(event.detail, false);

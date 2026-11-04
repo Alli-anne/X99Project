@@ -29,13 +29,13 @@ if (
     images: {
       enabled: false,
       color: '#DDD8C4',
-      radius: 0,
+        radius: 18,
       thickness: 2
     },
     buttons: {
       enabled: false,
       color: '#DDD8C4',
-      radius: 0,
+        radius: 17,
       thickness: 2
     }
   };
@@ -120,7 +120,9 @@ if (
         ? `${current.thickness}px solid ${current.color}`
         : 'none';
 
-      element.style.borderRadius = `${current.radius}px`;
+      element.style.borderRadius = current.enabled || current.radius > 0
+        ? `${current.radius}px`
+        : '';
     });
 
     // Synchronize overlay rounding when editing image borders.

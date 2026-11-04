@@ -59,12 +59,12 @@
           <button class="tools" id="draw" type="button" aria-label="Draw">〰</button>
           <button class="tools" id="shapes" type="button" aria-label="Shapes"></button>
           <button class="tools" id="colors" type="button" aria-label="Colors"></button>
-          <button class="tools" id="eyedropper" type="button" aria-label="Eyedropper"><svg viewBox="0 0 32 32" width="30" height="30" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m19 12-12 12-1 5 5-1 12-12M16 9l9 9M20 11l4-6a3 3 0 0 1 4 4l-6 4M5 29l-2 2"/></svg></button>
+          <button class="tools" id="eyedropper" type="button" aria-label="Arrange layout" aria-expanded="false"><svg viewBox="0 0 32 32" width="30" height="30" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M16 3v26M3 16h26M16 3l-4 4M16 3l4 4M16 29l-4-4M16 29l4-4M3 16l4-4M3 16l4 4M29 16l-4-4M29 16l-4 4"/></svg></button>
           <button class="tools" id="boarders" type="button" aria-label="Borders">◕</button>
         </div>
         
         <div id="border-popout" class="border-popout" hidden>
-          <h3>Border Settings</h3>
+          <div class="tool-panel-heading"><h3>Border Settings</h3><button class="tool-close" type="button" data-close-tool="border-popout" aria-label="Close border settings">×</button></div>
         
           <div class="border-control">
             <label for="border-target">Apply border to:</label>
@@ -152,7 +152,7 @@
         
         <!-- Color overlay popup -->
         <div id="color-popout" class="border-popout color-popout" hidden>
-          <h3>Image Color Settings</h3>
+          <div class="tool-panel-heading"><h3>Image Color Settings</h3><button class="tool-close" type="button" data-close-tool="color-popout" aria-label="Close image color settings">×</button></div>
         
           <!-- Preset colors -->
           <div class="border-control">
@@ -252,6 +252,8 @@
     <script type="module" src="scripts/borders.js"></script>
     <script type="module" src="scripts/project-name.js"></script>
     <script type="module" src="scripts/color-tool.js"></script>
+    <script type="module" src="scripts/tool-close.js"></script>
+    <script type="module" src="scripts/layout-tool.js"></script>
     <footer></footer>
   </body>
 </html>

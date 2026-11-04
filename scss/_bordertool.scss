@@ -29,6 +29,88 @@
   }
 }
 
+.tool-panel-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  cursor: grab;
+  touch-action: none;
+
+  h3 { margin: 0; }
+}
+
+.tool-panel-heading:active { cursor: grabbing; }
+
+.tool-close {
+  border: 0;
+  padding: 0 4px;
+  background: transparent;
+  color: #222;
+  cursor: pointer;
+  font-size: 26px;
+  line-height: 1;
+
+  &:hover, &:focus-visible { color: #8a3b12; }
+}
+
+#layout-popout {
+  .layout-help { margin: 0 0 12px; font-size: 13px; line-height: 1.35; }
+  .layout-spacing { display: grid; gap: 6px; margin-bottom: 8px; }
+  .layout-spacing label { display: flex; justify-content: space-between; gap: 8px; font-size: 12px; }
+  .layout-spacing output { color: #839096; }
+  .layout-spacing input[type='range'] { width: 100%; accent-color: #839096; }
+  .layout-restore { width: 100%; margin: 4px 0 8px; border: 1px solid #d6c5c7; border-radius: 6px; padding: 6px; background: #fff; color: #222; cursor: pointer; font-size: 12px; }
+  .layout-item {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 8px;
+    margin: 6px 0;
+    padding: 7px 6px;
+    border: 1px solid transparent;
+    border-radius: 6px;
+    background: #f8f5f1;
+    cursor: grab;
+    font-size: 13px;
+  }
+  .layout-item:hover, .layout-item:focus-within { border-color: #d6c5c7; }
+  .layout-item.is-dragging { opacity: .45; }
+  .layout-handle { color: #839096; font-size: 17px; letter-spacing: -5px; user-select: none; }
+  .layout-label { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .layout-visibility { border: 0; padding: 1px 4px; background: transparent; color: #555; cursor: pointer; font-size: 15px; line-height: 1; }
+}
+
+#eyedropper[aria-expanded='true'] { outline: 2px solid #839096; outline-offset: 2px; }
+
+.layout-mode [draggable='true'] {
+  cursor: grab;
+  outline: 2px dashed #839096;
+  outline-offset: 5px;
+}
+
+.layout-mode [data-layout-piece] {
+  cursor: grab;
+  outline: 2px dashed #839096;
+  outline-offset: 5px;
+  touch-action: none;
+}
+
+.layout-mode #edit-tools {
+  cursor: grab;
+  outline: 2px dashed #839096;
+  outline-offset: 5px;
+  touch-action: none;
+}
+
+.layout-mode #edit-tools:active { cursor: grabbing; }
+.layout-mode #edit-tools .border-popout { cursor: auto; touch-action: auto; }
+
+.layout-mode [data-layout-piece]:active { cursor: grabbing; }
+.layout-mode [data-layout-piece].layout-selected { outline: 3px solid #4a90e2; outline-offset: 5px; }
+
+.layout-mode [draggable='true']:active { cursor: grabbing; }
+
 .border-option {
   display: flex;
   align-items: center;
