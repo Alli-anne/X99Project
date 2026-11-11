@@ -936,8 +936,7 @@ img {
 
 .border-popout {
   position: absolute;
-  top: 0;
-  right: calc(-500% + 4px);
+  top: 35%;
   z-index: 200;
   width: 220px;
   max-width: calc(100vw - 32px);
@@ -1185,8 +1184,7 @@ img {
 
 .color-popout {
   position: absolute;
-  top: 0;
-  right: calc(-500% + 4px);
+  top: 35%;
   z-index: 200;
   width: 220px;
   max-width: calc(100vw - 32px);
@@ -1320,3 +1318,5 @@ h3 {
     display: none !important;
   }
 }
+
+/*# sourceMappingURL=Index.css.map */
