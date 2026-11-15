@@ -19,6 +19,23 @@
           <div class="palette-slot"><button class="palette-swatch palette-swatch--sage" type="button" data-color-role="accent" aria-label="Change accent color">84B59F</button><button class="palette-lock" type="button" data-lock-role="accent" aria-label="Lock accent color" aria-pressed="false">🔓</button></div>
           <div class="palette-slot"><button class="palette-swatch palette-swatch--teal" type="button" data-color-role="background" aria-label="Change background color">69A297</button><button class="palette-lock" type="button" data-lock-role="background" aria-label="Lock background color" aria-pressed="false">🔓</button></div>
           <button class="refresh-button" id="refresh-palette" type="button" aria-label="Try a different palette">⟳</button>
+          <div class="palette-count-controls" aria-label="Change number of colors"><button id="palette-add" type="button" aria-label="Add color">+</button><button id="palette-remove" type="button" aria-label="Remove color">−</button></div>
+          <fieldset id="button-style-popout" class="button-style-popout" hidden>
+            <legend>Button style</legend>
+            <label for="button-padding">Padding <output id="button-padding-value">18px</output></label>
+            <input id="button-padding" type="range" min="8" max="48" value="18">
+            <label for="button-font-size">Text size <output id="button-font-size-value">32px</output></label>
+            <input id="button-font-size" type="range" min="12" max="48" value="32">
+            <label for="button-font-family">Font</label>
+            <select id="button-font-family">
+              <option value="inherit">Project font</option>
+              <option value="Arial, sans-serif">Arial</option>
+              <option value="Georgia, serif">Georgia</option>
+              <option value="Verdana, sans-serif">Verdana</option>
+            </select>
+            <label for="button-text-color">Text color</label>
+            <input id="button-text-color" type="color" value="#FFFFFF">
+          </fieldset>
         </div>
         <p id="accessibility-warning" class="accessibility-warning" role="status" hidden></p>
         <div class="fonts-div">
@@ -44,10 +61,8 @@
           </div>
         </div>
         <div class="button-div">
-          <button class="btn">BUTTON</button>
-          <button class="btn">BUTTON</button>
-          <button class="btn">BUTTON</button>
-          <button class="btn">BUTTON</button>
+          <button class="btn" type="button">BUTTON</button>
+          <button class="btn" type="button">BUTTON</button>
         </div>
         <div class="img-div">
           <div id="editing-selected-images"></div>
@@ -145,8 +160,9 @@
               max="12"
               value="2">
           </div>
-        
+
         </div>
+
 
 
         
@@ -250,6 +266,7 @@
     <script type="module" src="scripts/generate-design.js"></script>
     <script type="module" src="scripts/palette-editor.js"></script>
     <script type="module" src="scripts/borders.js"></script>
+    <script type="module" src="scripts/button-style.js"></script>
     <script type="module" src="scripts/project-name.js"></script>
     <script type="module" src="scripts/color-tool.js"></script>
     <script type="module" src="scripts/tool-close.js"></script>

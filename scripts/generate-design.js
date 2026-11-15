@@ -29,6 +29,21 @@ function readablePaletteColor(background, colors) {
 function blackOrWhite(hex) {
   return paletteLuminance(hex) > 0.45 ? '#000000' : '#ffffff';
 }
+
+function blendHex(first, second, amount = 0.5) {
+  const toRgb = (hex) => hex.replace('#', '').match(/.{2}/g).map((part) => Number.parseInt(part, 16));
+  const firstRgb = toRgb(first);
+  const secondRgb = toRgb(second);
+  return `#${firstRgb.map((channel, index) => Math.round(channel + (secondRgb[index] - channel) * amount).toString(16).padStart(2, '0')).join('')}`.toUpperCase();
+}
+
+function distinctBlend(first, second, existing) {
+  for (const amount of [0.35, 0.5, 0.65, 0.8]) {
+    const candidate = blendHex(first, second, amount);
+    if (!existing.has(candidate)) return candidate;
+  }
+  return blendHex(first, second, 0.5);
+}
 const imageLookup = new Map(
   Object.entries(imagesByCategory).flatMap(([category, photos]) =>
     photos.map((photo) => [`${category}-${photo.id}`, photo])
@@ -115,6 +130,12 @@ function applyDesign(board, options, design) {
     ...(savedPalette || {}),
     primary: savedPalette?.primary || sessionStorage.getItem('x99-main-color') || palette.colors.primary
   };
+  const existingColors = new Set(Object.values(colors).map((color) => color.toUpperCase()));
+  const extraOne = distinctBlend(colors.primary, colors.secondary, existingColors);
+  existingColors.add(extraOne);
+  const extraColors = { 'extra-1': extraOne };
+  sessionStorage.setItem('x99-palette-extra-colors', JSON.stringify(extraColors));
+  sessionStorage.setItem('x99-palette-count', '5');
   board.style.backgroundColor = '#fffdfd';
   board.style.color = readablePaletteColor('#fffdfd', colors);
 

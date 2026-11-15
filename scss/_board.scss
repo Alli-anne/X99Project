@@ -63,6 +63,19 @@
   margin: 0 auto 12px;
   .refresh-button { position: absolute; left: calc(100% + 8px); top: 0; }
 }
+.palette-count-controls {
+  position: absolute;
+  right: calc(100% + 8px);
+  top: 0;
+  display: flex;
+  gap: 4px;
+  z-index: 2;
+  opacity: 0;
+  transition: opacity 150ms ease;
+  .color-palette:hover &, &:focus-within { opacity: 1; }
+  button { width: 18px; height: 18px; border: 0; border-radius: 50%; background: $taupe; color: #fff; font-size: 13px; line-height: 1; cursor: pointer; padding: 0; }
+  button:disabled { opacity: .45; cursor: not-allowed; }
+}
 .accessibility-warning {
   max-width: 75%;
   margin: 8px auto 18px;
@@ -83,7 +96,7 @@
   min-height: 158px;
   color: black;
   font-family: Arial, sans-serif;
-  font-size: clamp(16px, 2.7vw, 24px);
+  font-size: clamp(12px, 2.2vw, 22px);
   font-weight: 700;
   &:hover, &:focus-visible { filter: brightness(.96); outline: 2px solid currentColor; outline-offset: -2px; }
   &.is-locked { cursor: not-allowed; }
@@ -98,6 +111,27 @@
   flex: 1;
   min-width: 0;
   display: flex;
+  cursor: grab;
+  &.is-dragging { opacity: .55; cursor: grabbing; }
+}
+.palette-drag-handle {
+  position: absolute;
+  z-index: 2;
+  top: 4px;
+  left: 50%;
+  width: 28px;
+  height: 18px;
+  transform: translateX(-50%);
+  border: 0;
+  border-radius: 6px;
+  padding: 0;
+  background: rgb(0 0 0 / 18%);
+  color: #fff;
+  cursor: grab;
+  font: 700 13px/1 Arial, sans-serif;
+  letter-spacing: -3px;
+  &:active { cursor: grabbing; }
+  &:focus-visible { outline: 2px solid #fff; outline-offset: 1px; }
 }
 .palette-lock {
   position: absolute;
@@ -189,6 +223,67 @@
     &:hover { filter: brightness(.96); }
   }
 }
+.button-color-popover {
+  position: fixed;
+  z-index: 20;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(90px, 1fr));
+  gap: 6px;
+  width: min(210px, calc(100vw - 16px));
+  padding: 8px;
+  border: 1px solid rgb(44 35 35 / 20%);
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: 0 8px 24px rgb(44 35 35 / 20%);
+  .button-color-option {
+    min-height: 34px;
+    border: 0;
+    border-radius: 6px;
+    padding: 4px 6px;
+    font: 700 11px/1 Arial, sans-serif;
+    cursor: pointer;
+  }
+}
+.font-color-popover {
+  position: fixed;
+  z-index: 20;
+  display: flex;
+  gap: 6px;
+  padding: 8px;
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: 0 8px 24px rgb(44 35 35 / 20%);
+  button {
+    width: 42px;
+    height: 30px;
+    border: 0;
+    border-radius: 5px;
+    font: 700 10px Arial, sans-serif;
+    cursor: pointer;
+  }
+}
+.button-color-popover .button-style-popout {
+  position: static;
+  grid-column: 1 / -1;
+  width: auto;
+  margin-top: 4px;
+}
+.button-style-controls,
+.button-style-popout {
+  position: absolute;
+  left: 0;
+  top: calc(100% + 12px);
+  z-index: 19;
+  display: grid;
+  gap: 8px;
+  width: min(220px, calc(100vw - 16px));
+  padding: 12px;
+  border: 1px solid rgb(44 35 35 / 16%);
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: 0 8px 24px rgb(44 35 35 / 20%);
+  legend { padding: 0 4px; font-weight: 700; }
+}
 .img-div {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -206,6 +301,7 @@
 
 // Native details/summary provides the collapsed and expanded toolbar states.
 #edit-tools, .board-edit-link {
+  position: relative;
   grid-column: 1;
   grid-row: 1;
   justify-self: center;

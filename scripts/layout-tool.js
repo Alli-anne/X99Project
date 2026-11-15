@@ -32,8 +32,21 @@ if (layoutButton && board) {
 
   function save() {
     sessionStorage.setItem(layoutKey, JSON.stringify(state));
-    if (undoButton) undoButton.disabled = history.length === 0;
-    if (redoButton) redoButton.disabled = future.length === 0;
+    if (board.classList.contains('layout-mode')) {
+      if (undoButton) undoButton.disabled = history.length === 0;
+      if (redoButton) redoButton.disabled = future.length === 0;
+    }
+  }
+  function syncPaletteHistoryButtons() {
+    if (board.classList.contains('layout-mode')) return;
+    let undoLength = 0;
+    let redoLength = 0;
+    try {
+      undoLength = JSON.parse(sessionStorage.getItem('x99-palette-history') || '[]').length;
+      redoLength = JSON.parse(sessionStorage.getItem('x99-palette-history-future') || '[]').length;
+    } catch {}
+    if (undoButton) undoButton.disabled = undoLength === 0;
+    if (redoButton) redoButton.disabled = redoLength === 0;
   }
   function copyState() { return JSON.parse(JSON.stringify(state)); }
   function recordChange() { history.push(copyState()); future.length = 0; save(); }
@@ -83,14 +96,13 @@ if (layoutButton && board) {
 
   function getDraggablePieces() {
     const pieces = [];
-    layoutParts.filter(([id]) => !['fonts-div', 'button-div', 'img-div'].includes(id)).forEach(([id]) => {
+    layoutParts.filter(([id]) => !['color-palette', 'fonts-div', 'button-div', 'img-div'].includes(id)).forEach(([id]) => {
       const element = findPart(id);
       if (element) pieces.push({ key: id, element });
     });
     board.querySelectorAll('.fonts, .button-div .btn, #editing-selected-images img').forEach((element, index) => {
       pieces.push({ key: `piece-${index}`, element });
     });
-    if (sidebar) pieces.push({ key: 'sidebar', element: sidebar });
     return pieces;
   }
 
@@ -146,6 +158,7 @@ if (layoutButton && board) {
     layoutButton.setAttribute('aria-expanded', String(opening));
     board.classList.toggle('layout-mode', opening);
     if (opening) renderControls();
+    else syncPaletteHistoryButtons();
   });
   panel.querySelector('.tool-close').addEventListener('click', close);
   panel.querySelector('.layout-restore').addEventListener('click', () => {
@@ -206,7 +219,7 @@ if (layoutButton && board) {
       element.dataset.layoutPiece = key;
       element.draggable = false;
       element.addEventListener('pointerdown', (event) => {
-        if (!board.classList.contains('layout-mode') || event.button !== 0) return;
+        if (event.button !== 0) return;
         if (element === sidebar && event.target.closest('button, input, .border-popout')) return;
         selectedPiece?.classList.remove('layout-selected');
         selectedPiece = element;
@@ -270,12 +283,14 @@ if (layoutButton && board) {
     save();
   });
   undoButton?.addEventListener('click', () => {
+    if (!board.classList.contains('layout-mode')) return;
     const previous = history.pop();
     if (!previous) return;
     future.push(copyState());
     restoreState(previous);
   });
   redoButton?.addEventListener('click', () => {
+    if (!board.classList.contains('layout-mode')) return;
     const next = future.pop();
     if (!next) return;
     history.push(copyState());

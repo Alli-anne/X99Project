@@ -8,6 +8,15 @@ function getSavedSettings(key) {
   }
 }
 
+function getSessionSettings(key) {
+  try {
+    return JSON.parse(sessionStorage.getItem(key) || 'null');
+  } catch (error) {
+    console.error(`Could not read ${key}:`, error);
+    return null;
+  }
+}
+
 function colorToRgba(color, opacity) {
   if (color.startsWith('rgb')) {
     const values = color.match(/[\d.]+/g);
@@ -32,6 +41,13 @@ function colorToRgba(color, opacity) {
   return `rgba(${red}, ${green}, ${blue}, ${opacity})`;
 }
 
+function readableTextColor(hex) {
+  const value = hex.replace('#', '');
+  const channels = [0, 2, 4].map((index) => parseInt(value.slice(index, index + 2), 16) / 255);
+  const luminance = channels.reduce((sum, channel, index) => sum + channel * [0.2126, 0.7152, 0.0722][index], 0);
+  return luminance > 0.45 ? '#000000' : '#ffffff';
+}
+
 function applyFinalStyles() {
   const imageContainer = document.querySelector(
     '#editing-selected-images'
@@ -52,6 +68,46 @@ function applyFinalStyles() {
   const colorSettings = getSavedSettings(
     'projectColorSettings'
   );
+
+  const savedPalette = getSessionSettings('x99-palette-colors') || {};
+  const extraColors = getSessionSettings('x99-palette-extra-colors') || {};
+  const paletteOrder = getSessionSettings('x99-palette-order') || [];
+  const paletteCount = Math.min(5, Math.max(3, Number(getSessionSettings('x99-palette-count')) || 4));
+  const buttonRoles = getSessionSettings('x99-button-color-roles') || {};
+  const buttonStyle = getSavedSettings('projectButtonStyle') || {};
+  document.querySelectorAll('.fonts ul').forEach((list) => {
+    const color = sessionStorage.getItem(`x99-font-color-${list.id}`);
+    if (color) list.style.color = color;
+  });
+  const buttonColors = { ...savedPalette, ...extraColors };
+
+  const palette = document.querySelector('#final-page .color-palette');
+  if (palette) {
+    const defaultOrder = ['primary', 'secondary', 'accent', 'background', ...Object.keys(extraColors)];
+    const order = [...new Set([...paletteOrder, ...defaultOrder])]
+      .filter((role) => buttonColors[role])
+      .slice(0, paletteCount);
+    palette.replaceChildren();
+    order.forEach((role) => {
+      const swatch = document.createElement('div');
+      swatch.className = 'palette-swatch';
+      swatch.textContent = buttonColors[role].replace('#', '');
+      swatch.style.backgroundColor = buttonColors[role];
+      swatch.style.color = readableTextColor(buttonColors[role]);
+      palette.append(swatch);
+    });
+  }
+
+  buttons.forEach((button, index) => {
+    const role = buttonRoles[index] || ['primary', 'secondary', 'accent'][index % 3];
+    if (!buttonColors[role]) return;
+    button.style.backgroundColor = buttonColors[role];
+    button.style.color = readableTextColor(buttonColors[role]);
+    if (buttonStyle.padding) button.style.padding = `${buttonStyle.padding}px 12px`;
+    if (buttonStyle.size) button.style.fontSize = `${buttonStyle.size}px`;
+    if (buttonStyle.font) button.style.fontFamily = buttonStyle.font;
+    if (buttonStyle.color) button.style.color = buttonStyle.color;
+  });
 
   // Apply image and button borders independently.
   if (borderSettings) {
