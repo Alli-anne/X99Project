@@ -243,9 +243,60 @@
             class="overlay-clear">
             Remove overlay
           </button>
+        </div>
+
+        <!-- Draw-to-Style Popup -->
+        <div id="draw-style-popout" class="draw-style-popout" hidden>
+        
+          <div class="draw-style-heading">
+            <h3>Element Styling</h3>
+            <button
+              type="button"
+              id="draw-style-close"
+              aria-label="Close styling popup">
+              ×
+            </button>
+          </div>
+        
+          <!-- Background color -->
+          <div class="draw-style-section">
+            <label>Background color</label>
+        
+            <div id="draw-background-colors" class="draw-style-colors">
+              <!-- Generated from project palette -->
+            </div>
+        
+            <label for="draw-background-custom">Custom background</label>
+            <input
+              type="color"
+              id="draw-background-custom"
+              value="#DDD8C4">
+          </div>
+        
+          <hr>
+        
+          <!-- Text color -->
+          <div class="draw-style-section">
+            <label>Text color</label>
+        
+            <div id="draw-text-colors" class="draw-style-colors">
+              <!-- Generated from project palette -->
+            </div>
+        
+            <label for="draw-text-custom">Custom text color</label>
+            <input
+              type="color"
+              id="draw-text-custom"
+              value="#FFFFFF">
+          </div>
         
         </div>
         
+        <!-- Selection instruction -->
+        <div id="draw-instruction" hidden>
+          ✎ Select an element
+        </div>
+      
       
 
       </details>
@@ -271,6 +322,7 @@
     <script type="module" src="scripts/color-tool.js"></script>
     <script type="module" src="scripts/tool-close.js"></script>
     <script type="module" src="scripts/layout-tool.js"></script>
+    <script type="module" src="scripts/change-color-tool.js"></script>
     <footer></footer>
   </body>
 </html>

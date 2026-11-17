@@ -1448,3 +1448,156 @@ h3 {
     display: none !important;
   }
 }
+body.draw-mode {
+  cursor: crosshair;
+}
+body.draw-mode #edit-page {
+  cursor: crosshair;
+}
+body.draw-mode #edit-page button,
+body.draw-mode #edit-page h1,
+body.draw-mode #edit-page h2,
+body.draw-mode #edit-page h3,
+body.draw-mode #edit-page h4,
+body.draw-mode #edit-page p,
+body.draw-mode #edit-page li,
+body.draw-mode #edit-page a,
+body.draw-mode #edit-page span,
+body.draw-mode #edit-page div {
+  cursor: crosshair;
+}
+
+#draw.active {
+  background: #84B59F;
+  color: #fff;
+  border: 2px solid #69A297;
+}
+
+.draw-selected {
+  outline: 2px dashed #69A297 !important;
+  outline-offset: 4px;
+}
+
+#draw-instruction {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9999;
+  padding: 12px 22px;
+  background: #252525;
+  color: #fff;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  pointer-events: none;
+}
+#draw-instruction[hidden] {
+  display: none;
+}
+
+.draw-style-popout {
+  position: fixed;
+  width: 250px;
+  max-width: calc(100vw - 20px);
+  padding: 16px;
+  background: #fff;
+  color: #252525;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+  z-index: 10000;
+}
+.draw-style-popout[hidden] {
+  display: none;
+}
+.draw-style-popout hr {
+  border: none;
+  border-top: 1px solid #e5e5e5;
+  margin: 14px 0;
+}
+.draw-style-popout label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 13px;
+  font-weight: 600;
+}
+.draw-style-popout input[type=color] {
+  width: 100%;
+  height: 38px;
+  padding: 3px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.draw-style-popout select {
+  width: 100%;
+  padding: 9px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  background: #fff;
+  color: #252525;
+}
+
+.draw-style-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 15px;
+}
+.draw-style-heading h3 {
+  margin: 0;
+  font-size: 16px;
+}
+.draw-style-heading button {
+  background: none;
+  border: none;
+  font-size: 23px;
+  cursor: pointer;
+}
+
+.draw-style-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.draw-style-colors {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 9px;
+  margin-bottom: 12px;
+}
+
+.draw-color-swatch {
+  width: 42px;
+  height: 35px;
+  border: 2px solid rgba(0, 0, 0, 0.12);
+  border-radius: 7px;
+  cursor: pointer;
+  transition: transform 0.2s, border-color 0.2s;
+}
+.draw-color-swatch:hover {
+  transform: scale(1.08);
+  border-color: #252525;
+}
+.draw-color-swatch:focus-visible {
+  outline: 2px solid #252525;
+  outline-offset: 3px;
+}
+
+@media (max-width: 500px) {
+  .draw-style-popout {
+    width: 230px;
+  }
+  .draw-style-colors {
+    gap: 6px;
+  }
+  .draw-color-swatch {
+    width: 38px;
+    height: 34px;
+  }
+}
+
+/*# sourceMappingURL=Index.css.map */
