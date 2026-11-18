@@ -404,8 +404,10 @@ function setupButtonColorPicker() {
   const close = () => { picker.hidden = true; activeButton = null; };
   buttons.forEach((button, index) => {
     button.addEventListener('click', (event) => {
+      if (document.querySelector('#edit-page')?.classList.contains('layout-mode')) return;
       event.stopPropagation();
       activeButton = button;
+      const styleSettings = picker.querySelector('#button-style-popout');
       picker.replaceChildren();
       const colors = { ...(readPalette() || fallbackPalettes[0]), ...readExtraColors() };
       Object.entries(colors).forEach(([role, color]) => {
@@ -422,10 +424,11 @@ function setupButtonColorPicker() {
           selected[index] = role;
           sessionStorage.setItem(buttonColorRolesKey, JSON.stringify(selected));
           applyPalette(readPalette() || fallbackPalettes[0]);
-          close();
+          if (!picker.dataset.docked) close();
         });
         picker.append(option);
       });
+      if (styleSettings) picker.append(styleSettings);
       const rect = button.getBoundingClientRect();
       picker.style.left = `${Math.min(window.innerWidth - 220, Math.max(8, rect.left))}px`;
       picker.style.top = `${Math.min(window.innerHeight - 80, rect.bottom + 8)}px`;
@@ -433,6 +436,7 @@ function setupButtonColorPicker() {
     });
   });
   document.addEventListener('click', (event) => {
+    if (picker.dataset.docked) return;
     if (activeButton && !picker.contains(event.target) && !event.target.closest('.button-div .btn')) close();
   });
 }

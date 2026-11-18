@@ -105,6 +105,43 @@ function getFontOverrides() {
   return JSON.parse(sessionStorage.getItem(fontOverridesKey) || '{}');
 }
 
+// Resolve saved choices back to the JSON, so it remains the source of font data.
+function getDesignFonts(options, design = getSavedDesign()) {
+  const pairing = options.fontPairings.find((item) => item.id === design?.fontPairingId)
+    || options.fontPairings[0];
+  const overrides = getFontOverrides();
+  return Object.fromEntries(['heading', 'body'].map((role) => [role,
+    options.fontPairings.map((item) => item[role])
+      .find((font) => font.family === overrides[role]?.family) || pairing[role]
+  ]));
+}
+
+function applyFonts(board, options, design) {
+  const { heading, body } = getDesignFonts(options, design);
+  const title = board.querySelector('#project-name');
+  title.style.fontFamily = `"${heading.family}", ${heading.fallback}`;
+  title.style.fontWeight = heading.weight;
+  [[board.querySelector('#header-font'), heading], [board.querySelector('#body-font'), body]]
+    .forEach(([list, font]) => {
+      list.style.fontFamily = `"${font.family}", ${font.fallback}`;
+      const weights = [...new Set(font.weights?.length ? font.weights : [font.weight])];
+      list.replaceChildren(...weights.map((weight) => {
+        const item = document.createElement('li');
+        item.textContent = font.family;
+        item.style.fontWeight = weight;
+        return item;
+      }));
+    });
+  let stylesheet = document.querySelector('#generated-fonts');
+  if (!stylesheet) {
+    stylesheet = document.createElement('link');
+    stylesheet.id = 'generated-fonts';
+    stylesheet.rel = 'stylesheet';
+    document.head.append(stylesheet);
+  }
+  stylesheet.href = fontCssUrl([heading, body]);
+}
+
 function fontCssUrl(fonts) {
   const families = fonts.map((font) => {
     const family = encodeURIComponent(font.family).replace(/%20/g, '+');
@@ -122,59 +159,33 @@ function applyDesign(board, options, design) {
   if (!palette || !pairing) throw new Error('Saved design options are missing.');
 
   const savedPalette = JSON.parse(sessionStorage.getItem('x99-palette-colors') || 'null');
-  const fontOverrides = getFontOverrides();
-  const headingFont = fontOverrides.heading || pairing.heading;
-  const bodyFont = fontOverrides.body || pairing.body;
   const colors = {
     ...palette.colors,
     ...(savedPalette || {}),
     primary: savedPalette?.primary || sessionStorage.getItem('x99-main-color') || palette.colors.primary
   };
+  board.designColors = colors;
   const existingColors = new Set(Object.values(colors).map((color) => color.toUpperCase()));
   const extraOne = distinctBlend(colors.primary, colors.secondary, existingColors);
   existingColors.add(extraOne);
-  const extraColors = { 'extra-1': extraOne };
+  const extraColors = JSON.parse(sessionStorage.getItem('x99-palette-extra-colors') || 'null') || { 'extra-1': extraOne };
   sessionStorage.setItem('x99-palette-extra-colors', JSON.stringify(extraColors));
-  sessionStorage.setItem('x99-palette-count', '5');
+  if (!sessionStorage.getItem('x99-palette-count')) sessionStorage.setItem('x99-palette-count', '5');
   board.style.backgroundColor = '#fffdfd';
   board.style.color = readablePaletteColor('#fffdfd', colors);
 
   const title = board.querySelector('#project-name');
   title.textContent = sessionStorage.getItem('x99-project-name') || palette.name;
-  title.style.fontFamily = `"${headingFont.family}", ${headingFont.fallback}`;
-  title.style.fontWeight = headingFont.weight;
-
-  const fontLists = [
-    [board.querySelector('#header-font'), headingFont],
-    [board.querySelector('#body-font'), bodyFont]
-  ];
-  fontLists.forEach(([list, font]) => {
-    list.style.fontFamily = `"${font.family}", ${font.fallback}`;
+  applyFonts(board, options, design);
+  board.querySelectorAll('#header-font, #body-font').forEach((list) => {
     list.style.color = readablePaletteColor(colors.secondary, colors);
     list.style.backgroundColor = colors.secondary;
-    const weights = Array.isArray(font.weights)
-      ? font.weights.filter((weight) => Number.isFinite(weight))
-      : (Number.isFinite(font.weight) ? [font.weight] : []);
-    list.replaceChildren(...weights.map((weight) => {
-      const item = document.createElement('li');
-      item.textContent = font.family;
-      item.style.fontWeight = weight;
-      return item;
-    }));
   });
-
-  let fontStylesheet = document.querySelector('#generated-fonts');
-  if (!fontStylesheet) {
-    fontStylesheet = document.createElement('link');
-    fontStylesheet.id = 'generated-fonts';
-    fontStylesheet.rel = 'stylesheet';
-    document.head.append(fontStylesheet);
-  }
-  fontStylesheet.href = fontCssUrl([headingFont, bodyFont]);
 
   const roles = ['primary', 'secondary', 'accent', 'background'];
   const textRoles = ['onPrimary', 'onSecondary', 'onAccent', 'text'];
   board.querySelectorAll('.palette-swatch').forEach((swatch, index) => {
+    if (!roles[index]) return;
     swatch.style.backgroundColor = colors[roles[index]];
     swatch.style.color = blackOrWhite(colors[roles[index]]);
     swatch.textContent = colors[roles[index]].replace('#', '');
@@ -221,6 +232,7 @@ async function generateFromVibe() {
     try {
       const options = await loadDesignOptions();
       saveDesign(chooseDesign(options, selectedCategory, selectedImages));
+      sessionStorage.removeItem(fontOverridesKey);
       window.location.href = generateButton.href;
     } catch (error) {
       alert(error.message);
@@ -232,10 +244,10 @@ async function applySavedDesign() {
   const board = document.querySelector('#edit-page, #final-page');
   if (!board) return;
   const design = getSavedDesign();
-  if (!design) return;
-
   try {
-    applyDesign(board, await loadDesignOptions(), design);
+    const options = await loadDesignOptions();
+    if (design) applyDesign(board, options, design);
+    else applyFonts(board, options);
   } catch (error) {
     console.error(error);
   }
@@ -248,22 +260,20 @@ async function setupFontRefresh() {
     button.addEventListener('click', async () => {
       try {
         const options = await loadDesignOptions();
-        const design = getSavedDesign();
-        if (!design) return;
-        const pairing = options.fontPairings.find((item) => item.id === design.fontPairingId);
+        const role = index === 0 ? 'heading' : 'body';
         const currentOverrides = getFontOverrides();
-        const currentFamily = index === 0
-          ? currentOverrides.heading?.family || pairing.heading.family
-          : currentOverrides.body?.family || pairing.body.family;
-        const candidates = options.fontPairings
-          .map((item) => index === 0 ? item.heading : item.body)
+        const currentFamily = getDesignFonts(options)[role].family;
+        const candidates = [...new Map(options.fontPairings
+          .map((item) => [item[role].family, item[role]])).values()]
           .filter((font) => font.family !== currentFamily);
         const nextFont = randomItem(candidates);
+        if (!nextFont) return;
         sessionStorage.setItem(fontOverridesKey, JSON.stringify({
           ...currentOverrides,
-          [index === 0 ? 'heading' : 'body']: nextFont
+          [role]: nextFont
         }));
-        await applySavedDesign();
+        // Refresh typography without rebuilding colors, images, or the layout.
+        applyFonts(document.querySelector('#edit-page'), options);
       } catch (error) {
         console.error('Could not refresh font.', error);
       }
@@ -272,5 +282,5 @@ async function setupFontRefresh() {
 }
 
 generateFromVibe();
-applySavedDesign();
+export const designReady = applySavedDesign();
 setupFontRefresh();

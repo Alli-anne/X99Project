@@ -341,8 +341,10 @@
   box-shadow: 3px 3px 5px #0003;
   &:hover { filter: brightness(.94); }
 }
-#draw { font-style: italic; color: #756e71; }
-#shapes { position: relative; &::before { content: ''; width: 21px; height: 21px; background: #7d837f; box-shadow: 10px 6px 0 -1px black; } }
+#draw, #shapes {
+  color: #292727;
+  svg { width: 28px; height: 28px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+}
 #colors::before {
   content: '';
   width: 29px;

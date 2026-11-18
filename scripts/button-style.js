@@ -48,10 +48,11 @@ if (buttons.length && paddingInput && sizeInput && fontInput && textColorInput) 
   });
   buttons.forEach((button) => {
     button.addEventListener('click', () => {
+      if (document.querySelector('#edit-page')?.classList.contains('layout-mode')) return;
       if (!stylePanel) return;
       const activeChooser = document.querySelector('.button-color-popover');
       if (activeChooser && stylePanel.parentElement !== activeChooser) activeChooser.append(stylePanel);
-      stylePanel.hidden = !stylePanel.hidden;
+      stylePanel.hidden = false;
     });
   });
   apply();
@@ -59,9 +60,6 @@ if (buttons.length && paddingInput && sizeInput && fontInput && textColorInput) 
 
 const fontLists = [...document.querySelectorAll('.fonts ul')];
 if (fontLists.length) {
-  const palette = JSON.parse(sessionStorage.getItem('x99-palette-colors') || '{}');
-  const extras = JSON.parse(sessionStorage.getItem('x99-palette-extra-colors') || '{}');
-  const colors = { ...palette, ...extras };
   const chooser = document.createElement('div');
   chooser.className = 'font-color-popover';
   chooser.hidden = true;
@@ -70,18 +68,23 @@ if (fontLists.length) {
   fontLists.forEach((list) => {
     list.title = 'Click to choose the font color from the palette';
     list.addEventListener('click', () => {
+      if (document.querySelector('#edit-page')?.classList.contains('layout-mode')) return;
       activeList = list;
       chooser.replaceChildren();
+      const colors = [...document.querySelectorAll('.palette-swatch')]
+        .map(swatch => swatch.textContent.trim().match(/^[0-9a-f]{6}$/i)?.[0])
+        .filter(Boolean).map(hex => `#${hex}`);
       Object.values(colors).forEach((color) => {
         const option = document.createElement('button');
         option.type = 'button';
         option.textContent = color.replace('#', '');
         option.style.backgroundColor = color;
-        option.style.color = '#fff';
+        const rgb = color.slice(1).match(/../g).map(channel => parseInt(channel, 16));
+        option.style.color = rgb[0] * .299 + rgb[1] * .587 + rgb[2] * .114 > 150 ? '#000' : '#fff';
         option.addEventListener('click', () => {
           list.style.color = color;
           sessionStorage.setItem(`x99-font-color-${list.id}`, color);
-          chooser.hidden = true;
+          if (!chooser.dataset.docked) chooser.hidden = true;
         });
         chooser.append(option);
       });
@@ -94,6 +97,7 @@ if (fontLists.length) {
     if (savedColor) list.style.color = savedColor;
   });
   document.addEventListener('click', (event) => {
+    if (chooser.dataset.docked) return;
     if (activeList && !chooser.contains(event.target) && !event.target.closest('.fonts ul')) chooser.hidden = true;
   });
 }

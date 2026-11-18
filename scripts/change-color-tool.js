@@ -18,6 +18,18 @@ document.addEventListener("DOMContentLoaded", () => {
   let drawActive = false;
   let selectedElement = null;
 
+  // Only one editing tool should handle a board click at a time.
+  document.querySelector('.tools-list').addEventListener('click', (event) => {
+    if (!event.target.closest('.tools:not(#draw)') || !drawActive) return;
+    drawActive = false;
+    drawButton.classList.remove('active');
+    document.body.classList.remove('draw-mode');
+    instruction.hidden = true;
+    popup.hidden = true;
+    selectedElement?.classList.remove('draw-selected');
+    selectedElement = null;
+  });
+
   // Elements that should not be selectable
   const excludedElements = [
     "#draw-style-popout",
@@ -163,6 +175,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // Position the popup above the selected element
   
   function positionPopup(element) {
+    if (popup.dataset.docked) return;
   
     const rect = element.getBoundingClientRect();
   

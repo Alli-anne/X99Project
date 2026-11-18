@@ -61,6 +61,9 @@ Open these routes while `npm run start` is running:
 - `/vibe.html`: categories, main color, and inspiration images.
 - `/edit.html`: design board with an expandable editing toolbar.
 - `/final.html`: final board preview and existing action links.
+- `/cat.html`: responsive, one-page cat site built with the Desert Linen — Pastel palette.
+
+The cat site is a static landing page with an introductory hero, short story, cat cards, and an email link. It uses the provided Nunito/Lato Google Fonts stylesheet and Unsplash photos, so those assets need an internet connection. The name and copy are simple placeholders that can be replaced in `cat.html`; its page-specific responsive styles and color tokens are in `scss/_cat-site.scss`.
 
 The SCSS is split into `_tokens.scss` (colors), `_base.scss` (fonts and shared
 elements), `_opening.scss`, `_vibe.scss`, and `_board.scss` (edit and final).

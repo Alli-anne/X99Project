@@ -148,10 +148,15 @@ if (layoutButton && board) {
   function close() {
     panel.hidden = true;
     layoutButton.setAttribute('aria-expanded', 'false');
+    board.classList.remove('layout-mode');
+    selectedPiece?.classList.remove('layout-selected');
+    selectedPiece = null;
+    syncPaletteHistoryButtons();
   }
 
   layoutButton.addEventListener('click', () => {
     const opening = panel.hidden;
+    if (!opening) { close(); return; }
     document.querySelector('#border-popout')?.setAttribute('hidden', '');
     document.querySelector('#color-popout')?.setAttribute('hidden', '');
     panel.hidden = !opening;
@@ -161,6 +166,15 @@ if (layoutButton && board) {
     else syncPaletteHistoryButtons();
   });
   panel.querySelector('.tool-close').addEventListener('click', close);
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') close();
+  });
+  sidebar?.addEventListener('toggle', () => {
+    if (!sidebar.open) close();
+  });
+  sidebar?.addEventListener('click', (event) => {
+    if (event.target.closest('#draw, #shapes, #colors, #boarders')) close();
+  });
   panel.querySelector('.layout-restore').addEventListener('click', () => {
     recordChange();
     state.removed = [];
@@ -170,6 +184,7 @@ if (layoutButton && board) {
 
   const panelHeading = panel.querySelector('.tool-panel-heading');
   panelHeading.addEventListener('pointerdown', (event) => {
+    if (panel.dataset.docked) return;
     if (event.target.closest('button')) return;
     const start = state.panelPosition;
     recordChange();
@@ -214,12 +229,17 @@ if (layoutButton && board) {
   gapInput.addEventListener('change', () => { delete gapInput.dataset.historyStarted; });
   paddingInput.addEventListener('change', () => { delete gapInput.dataset.historyStarted; });
 
+  const boundPieces = new WeakSet();
   function enablePieceDragging() {
     getDraggablePieces().forEach(({ key, element }) => {
       element.dataset.layoutPiece = key;
       element.draggable = false;
+      if (boundPieces.has(element)) return;
+      boundPieces.add(element);
       element.addEventListener('pointerdown', (event) => {
-        if (event.button !== 0) return;
+        // Normal clicks edit content; only Arrange mode can move it.
+        if (!board.classList.contains('layout-mode') || panel.hidden || event.button !== 0) return;
+        if (event.target.closest('.refresh-button, input, select, textarea')) return;
         if (element === sidebar && event.target.closest('button, input, .border-popout')) return;
         selectedPiece?.classList.remove('layout-selected');
         selectedPiece = element;
@@ -230,6 +250,7 @@ if (layoutButton && board) {
         const originY = event.clientY;
         element.setPointerCapture(event.pointerId);
         const move = (moveEvent) => {
+          if (!board.classList.contains('layout-mode') || panel.hidden) { end(); return; }
           const position = { x: start.x + moveEvent.clientX - originX, y: start.y + moveEvent.clientY - originY };
           state.positions[key] = position;
           element.style.transform = `translate(${position.x}px, ${position.y}px)`;
@@ -237,11 +258,13 @@ if (layoutButton && board) {
         const end = () => {
           element.removeEventListener('pointermove', move);
           element.removeEventListener('pointerup', end);
-          element.releasePointerCapture?.(event.pointerId);
+          element.removeEventListener('pointercancel', end);
+          if (element.hasPointerCapture(event.pointerId)) element.releasePointerCapture(event.pointerId);
           save();
         };
         element.addEventListener('pointermove', move);
         element.addEventListener('pointerup', end, { once: true });
+        element.addEventListener('pointercancel', end, { once: true });
       });
     });
   }
@@ -258,6 +281,7 @@ if (layoutButton && board) {
       if (board.classList.contains('layout-mode')) event.preventDefault();
     });
     element.addEventListener('drop', (event) => {
+      if (!board.classList.contains('layout-mode') || panel.hidden) return;
       event.preventDefault();
       const from = state.order.indexOf(event.dataTransfer.getData('text/plain'));
       const to = state.order.indexOf(id);
@@ -270,7 +294,12 @@ if (layoutButton && board) {
     });
   });
   enablePieceDragging();
+  document.addEventListener('x99-design-applied', () => {
+    enablePieceDragging();
+    applyPositions();
+  });
   document.addEventListener('keydown', (event) => {
+    if (event.target.closest('input, textarea, select, [contenteditable="true"]')) return;
     if (!board.classList.contains('layout-mode') || !selectedPiece || !['Delete', 'Backspace'].includes(event.key)) return;
     const key = selectedPiece.dataset.layoutPiece;
     if (!key || key === 'sidebar') return;

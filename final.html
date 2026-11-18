@@ -55,20 +55,26 @@
             <span class="final-action-icon" aria-hidden="true">⇩</span>
             <span>Download</span>
           </a>
-          <a class="finish-edit-btn" href="final.html">
+          <a class="finish-edit-btn" id="share-project" href="#">
             <span class="final-action-icon" aria-hidden="true">↗</span>
             <span>Share</span>
           </a>
-          <a class="finish-edit-btn" href="final.html">
+          <a class="finish-edit-btn" id="project-prompt" href="#">
             <span class="final-action-icon" aria-hidden="true">✦</span>
             <span>AI</span>
           </a>
         </div>
       </section>
     </main>
-    <script type="module" src="scripts/show-image.js"></script>
-    <script type="module" src="scripts/generate-design.js"></script>
-    <script type="module" src="scripts/final-styles.js"></script>
-    <script type="module" src="scripts/final-download.js"></script>
+    <p id="final-status" role="status" aria-live="polite"></p>
+    <dialog id="final-dialog" aria-labelledby="final-dialog-title">
+      <header><h2 id="final-dialog-title"></h2><button type="button" id="close-final-dialog" aria-label="Close">×</button></header>
+      <p id="final-dialog-help"></p>
+      <label for="final-output" id="final-output-label">Project output</label>
+      <textarea id="final-output" rows="14" spellcheck="false"></textarea>
+      <div class="final-dialog-actions"><button type="button" id="copy-final-output">Copy</button><button type="button" id="save-final-output">Save prompt</button></div>
+      <p id="final-dialog-status" role="status" aria-live="polite"></p>
+    </dialog>
+    <script type="module" src="scripts/final-page.js"></script>
   </body>
 </html>

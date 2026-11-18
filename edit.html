@@ -71,8 +71,12 @@
       <details id="edit-tools" open>
         <summary class="tools-toggle" aria-label="Toggle editing tools">✎</summary>
         <div class="tools-list" role="group" aria-label="Editing tools">
-          <button class="tools" id="draw" type="button" aria-label="Draw">〰</button>
-          <button class="tools" id="shapes" type="button" aria-label="Shapes"></button>
+          <button class="tools" id="draw" type="button" aria-label="Style colors" title="Style colors">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m14 6 4 4M10 14 20 4a2.1 2.1 0 0 0-3-3L7 11zM10 14c0 4-3 6-7 6 2-2 0-5 4-6" /></svg>
+          </button>
+          <button class="tools" id="shapes" type="button" aria-label="Add elements" title="Add elements">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="12" height="12" rx="2" /><path d="M17 12v10m-5-5h10" /></svg>
+          </button>
           <button class="tools" id="colors" type="button" aria-label="Colors"></button>
           <button class="tools" id="eyedropper" type="button" aria-label="Arrange layout" aria-expanded="false"><svg viewBox="0 0 32 32" width="30" height="30" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M16 3v26M3 16h26M16 3l-4 4M16 3l4 4M16 29l-4-4M16 29l4-4M3 16l4-4M3 16l4 4M29 16l-4-4M29 16l-4 4"/></svg></button>
           <button class="tools" id="boarders" type="button" aria-label="Borders">◕</button>
@@ -322,7 +326,9 @@
     <script type="module" src="scripts/color-tool.js"></script>
     <script type="module" src="scripts/tool-close.js"></script>
     <script type="module" src="scripts/layout-tool.js"></script>
+    <script type="module" src="scripts/shapes-tool.js"></script>
     <script type="module" src="scripts/change-color-tool.js"></script>
+    <script type="module" src="scripts/tool-sidebar.js"></script>
     <footer></footer>
   </body>
 </html>

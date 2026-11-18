@@ -69,7 +69,8 @@ function applyFinalStyles() {
     'projectColorSettings'
   );
 
-  const savedPalette = getSessionSettings('x99-palette-colors') || {};
+  const savedPalette = getSessionSettings('x99-palette-colors')
+    || document.querySelector('#final-page')?.designColors || {};
   const extraColors = getSessionSettings('x99-palette-extra-colors') || {};
   const paletteOrder = getSessionSettings('x99-palette-order') || [];
   const paletteCount = Math.min(5, Math.max(3, Number(getSessionSettings('x99-palette-count')) || 4));
@@ -87,7 +88,7 @@ function applyFinalStyles() {
     const order = [...new Set([...paletteOrder, ...defaultOrder])]
       .filter((role) => buttonColors[role])
       .slice(0, paletteCount);
-    palette.replaceChildren();
+    if (order.length) palette.replaceChildren();
     order.forEach((role) => {
       const swatch = document.createElement('div');
       swatch.className = 'palette-swatch';
@@ -221,7 +222,7 @@ function applySavedLayout() {
 }
 
 // Apply styles when images are loaded.
-document.addEventListener('DOMContentLoaded', () => {
+function initializeFinalStyles() {
   applyFinalStyles();
   applySavedLayout();
 
@@ -238,6 +239,13 @@ document.addEventListener('DOMContentLoaded', () => {
       childList: true
     });
   }
+}
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initializeFinalStyles);
+else initializeFinalStyles();
+
+document.addEventListener('x99-design-applied', () => {
+  applyFinalStyles();
+  applySavedLayout();
 });
 
 // Also respond to the custom image-loaded event.

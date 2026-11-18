@@ -1,0 +1,23 @@
+#final-status { max-width: 720px; margin: 16px auto; padding: 0 20px; color: #292727; font: 15px/1.5 Arial, sans-serif; }
+#final-dialog {
+  width: min(760px, calc(100vw - 32px));
+  max-height: calc(100dvh - 40px);
+  overflow: auto;
+  padding: 24px;
+  border: 1px solid #d6c5c7;
+  border-radius: 16px;
+  color: #292727;
+  background: #fffdfd;
+  font: 15px/1.5 Arial, sans-serif;
+  &::backdrop { background: rgb(0 0 0 / 35%); }
+  header { display: flex; justify-content: space-between; align-items: center; gap: 20px; }
+  h2 { margin: 0; font-size: 24px; }
+  #close-final-dialog { background: transparent; border: 0; font-size: 28px; cursor: pointer; }
+  label { display: block; margin: 16px 0 8px; font-weight: bold; }
+  textarea { width: 100%; resize: vertical; padding: 12px; border: 1px solid #b8adae; border-radius: 8px; font: 14px/1.5 monospace; color: #222; background: white; }
+  .final-dialog-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 16px; }
+  .final-dialog-actions button, .final-dialog-actions a { padding: 10px 16px; border: 1px solid #bba292; border-radius: 8px; background: #f3eaea; color: #292727; font: inherit; cursor: pointer; }
+  [hidden] { display: none !important; }
+}
+#final-page.shared-board { padding: 0 !important; overflow: hidden; min-height: 0; }
+#print-design { position: fixed !important; left: -100000px; top: 0; }

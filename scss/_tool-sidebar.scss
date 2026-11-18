@@ -1,0 +1,74 @@
+// One stationary, scrollable home for every editing tool.
+#tool-sidebar {
+  position: fixed;
+  inset: 0 0 0 auto;
+  z-index: 20000;
+  width: min(320px, 90vw);
+  background: #fffdfd;
+  color: #292727;
+  border-left: 1px solid #d6c5c7;
+  box-shadow: -4px 0 20px rgb(0 0 0 / 8%);
+  display: flex;
+  flex-direction: column;
+  font: 14px/1.5 Arial, sans-serif;
+  &[hidden] { display: none; }
+  .tool-sidebar-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 20px;
+    border-bottom: 1px solid #e8dedf;
+    h2 { margin: 0; font: 600 20px/1.3 Arial, sans-serif; }
+    button { border: 0; background: transparent; color: inherit; font-size: 28px; cursor: pointer; width: 36px; height: 36px; }
+  }
+  .tool-sidebar-content { padding: 20px; overflow-y: auto; min-height: 0; }
+  [data-docked] {
+    position: static !important;
+    inset: auto !important;
+    transform: none !important;
+    width: 100% !important;
+    max-width: none !important;
+    max-height: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    background: transparent !important;
+    color: inherit !important;
+    overflow: visible !important;
+    pointer-events: auto;
+    &[hidden] { display: none !important; }
+    > .tool-panel-heading, > .draw-style-heading { display: none; }
+  }
+  label, legend { color: #292727; letter-spacing: normal; }
+  input[type='range'], select, textarea { max-width: 100%; }
+  input[type='range'] { width: 100%; }
+  select, textarea { padding: 8px; border: 1px solid #d6c5c7; border-radius: 6px; font: inherit; }
+  button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 2px solid #526b74; outline-offset: 2px; }
+  .button-color-popover, .font-color-popover { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+  .font-color-popover button { width: 100%; height: 38px; }
+  .button-style-popout {
+    position: static !important;
+    transform: none !important;
+    grid-column: 1 / -1;
+    width: 100%;
+    margin: 16px 0 0;
+    padding: 16px 0 0;
+    border: 0;
+    border-top: 1px solid #e8dedf;
+    box-shadow: none;
+  }
+  .draw-style-colors { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+
+// Reserve space on desktop; on narrow screens use a closable right-hand drawer.
+@media (min-width: 1000px) {
+  body.edit-page.settings-open {
+    width: 100%;
+    max-width: none;
+    padding-right: 320px;
+    > #main-header { width: 100%; margin-left: 0; }
+  }
+}
