@@ -69,17 +69,23 @@
         </div>
       </section>
       <details id="edit-tools" open>
-        <summary class="tools-toggle" aria-label="Toggle editing tools">✎</summary>
+        <summary class="tools-toggle" aria-label="Toggle editing tools" title="Show or hide editing tools"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 5 4 4M4 20l4-1L20 7a2.1 2.1 0 0 0-3-3L5 16z" /></svg></summary>
         <div class="tools-list" role="group" aria-label="Editing tools">
-          <button class="tools" id="draw" type="button" aria-label="Style colors" title="Style colors">
+          <button class="tools" id="draw" type="button" aria-label="Style colors" data-help="Select this tool, then click text, a button, or another element to change its background and text colors.">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m14 6 4 4M10 14 20 4a2.1 2.1 0 0 0-3-3L7 11zM10 14c0 4-3 6-7 6 2-2 0-5 4-6" /></svg>
           </button>
-          <button class="tools" id="shapes" type="button" aria-label="Add elements" title="Add elements">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="12" height="12" rx="2" /><path d="M17 12v10m-5-5h10" /></svg>
+          <button class="tools" id="shapes" type="button" aria-label="Add elements" data-help="Add shapes, text, and buttons to your design. Select an added element to customize it.">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="12" height="12" rx="2" /><path d="M17 12v9m-4.5-4.5h9" /></svg>
           </button>
-          <button class="tools" id="colors" type="button" aria-label="Colors"></button>
-          <button class="tools" id="eyedropper" type="button" aria-label="Arrange layout" aria-expanded="false"><svg viewBox="0 0 32 32" width="30" height="30" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M16 3v26M3 16h26M16 3l-4 4M16 3l4 4M16 29l-4-4M16 29l4-4M3 16l4-4M3 16l4 4M29 16l-4-4M29 16l-4 4"/></svg></button>
-          <button class="tools" id="boarders" type="button" aria-label="Borders">◕</button>
+          <button class="tools" id="colors" type="button" aria-label="Image colors" data-help="Add a color overlay to your images, adjust its opacity, or clear the tint.">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3" /><circle cx="8" cy="8" r="1.5" /><path d="m3 17 5-5 4 4 4-5 5 6" /></svg>
+          </button>
+          <button class="tools" id="eyedropper" type="button" aria-label="Arrange layout" aria-expanded="false" data-help="Turn Arrange on to drag pieces around the board. Adjust spacing, hide pieces, and restore hidden items here.">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v18M3 12h18m-12-6 3-3 3 3m-6 12 3 3 3-3M6 9l-3 3 3 3m12-6 3 3-3 3" /></svg>
+          </button>
+          <button class="tools" id="boarders" type="button" aria-label="Borders" data-help="Change the border color, thickness, and corner rounding for your images or buttons.">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" /><path d="M8 8h8v8H8z" stroke-dasharray="2 3" /></svg>
+          </button>
         </div>
         
         <div id="border-popout" class="border-popout" hidden>
@@ -329,6 +335,7 @@
     <script type="module" src="scripts/shapes-tool.js"></script>
     <script type="module" src="scripts/change-color-tool.js"></script>
     <script type="module" src="scripts/tool-sidebar.js"></script>
+    <script type="module" src="scripts/tool-help.js"></script>
     <footer></footer>
   </body>
 </html>

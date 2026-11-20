@@ -7,28 +7,44 @@
 
   .site-header__brand { font-size: clamp(36px, 5.9vw, 78px); }
 
-  &__title {
+  &__intro {
     align-self: center;
     justify-self: center;
-    max-width: calc(100% - 40px);
-    margin: 24px 20px;
-    font-size: clamp(25px, 5vw, 68px);
-    font-weight: 400;
+    width: min(920px, calc(100% - 40px));
+    padding: clamp(32px, 6vw, 72px) 0;
     text-align: center;
-
-    a {
-      display: block;
-      border-radius: 20px;
-      padding: 30px 46px;
-      background: $taupe;
-      color: white;
-      text-decoration: none;
-      text-transform: uppercase;
-      &:hover { filter: brightness(.93); }
-    }
+  }
+  &__title { margin: 0 0 20px; color: #514247; font-size: clamp(30px, 4.4vw, 48px); line-height: 1.2; }
+  &__overview { max-width: 690px; margin: 0 auto; color: #595155; font-size: clamp(16px, 2vw, 19px); line-height: 1.65; }
+  &__steps {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 24px;
+    margin: 36px 0;
+    padding: 0;
+    list-style: none;
+    counter-reset: step;
+    li { counter-increment: step; padding: 20px 16px; border-radius: 14px; background: #f5edef; color: #595155; }
+    li::before { content: counter(step); display: grid; place-items: center; width: 30px; height: 30px; margin: 0 auto 12px; border-radius: 50%; background: $rose; color: #514247; font-weight: 800; }
+    strong { display: block; margin-bottom: 8px; color: #514247; font-size: 17px; }
+    span { font-size: 15px; line-height: 1.6; }
+  }
+  &__start {
+    display: inline-block;
+    margin-bottom: 36px;
+    border-radius: 16px;
+    padding: 22px 38px;
+    background: $taupe;
+    color: white;
+    font-size: clamp(22px, 3vw, 32px);
+    text-decoration: none;
+    text-transform: uppercase;
+    &:hover { filter: brightness(.93); }
   }
 }
 
-@media (max-width: 540px) {
-  .opening-page__title a { padding: 24px; }
+@media (max-width: 640px) {
+  .opening-page__steps { grid-template-columns: 1fr; gap: 12px; margin: 26px 0; }
+  .opening-page__steps li { padding: 16px; }
+  .opening-page__start { padding: 20px 24px; }
 }

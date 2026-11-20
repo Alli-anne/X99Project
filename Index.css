@@ -109,31 +109,90 @@ img {
 .opening-page .site-header__brand {
   font-size: clamp(36px, 5.9vw, 78px);
 }
-.opening-page__title {
+.opening-page__intro {
   align-self: center;
   justify-self: center;
-  max-width: calc(100% - 40px);
-  margin: 24px 20px;
-  font-size: clamp(25px, 5vw, 68px);
-  font-weight: 400;
+  width: min(920px, 100% - 40px);
+  padding: clamp(32px, 6vw, 72px) 0;
   text-align: center;
 }
-.opening-page__title a {
+.opening-page__title {
+  margin: 0 0 20px;
+  color: #514247;
+  font-size: clamp(30px, 4.4vw, 48px);
+  line-height: 1.2;
+}
+.opening-page__overview {
+  max-width: 690px;
+  margin: 0 auto;
+  color: #595155;
+  font-size: clamp(16px, 2vw, 19px);
+  line-height: 1.65;
+}
+.opening-page__steps {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+  margin: 36px 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: step;
+}
+.opening-page__steps li {
+  counter-increment: step;
+  padding: 20px 16px;
+  border-radius: 14px;
+  background: #f5edef;
+  color: #595155;
+}
+.opening-page__steps li::before {
+  content: counter(step);
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  margin: 0 auto 12px;
+  border-radius: 50%;
+  background: #d6c5c7;
+  color: #514247;
+  font-weight: 800;
+}
+.opening-page__steps strong {
   display: block;
-  border-radius: 20px;
-  padding: 30px 46px;
+  margin-bottom: 8px;
+  color: #514247;
+  font-size: 17px;
+}
+.opening-page__steps span {
+  font-size: 15px;
+  line-height: 1.6;
+}
+.opening-page__start {
+  display: inline-block;
+  margin-bottom: 36px;
+  border-radius: 16px;
+  padding: 22px 38px;
   background: #bba292;
   color: white;
+  font-size: clamp(22px, 3vw, 32px);
   text-decoration: none;
   text-transform: uppercase;
 }
-.opening-page__title a:hover {
+.opening-page__start:hover {
   filter: brightness(0.93);
 }
 
-@media (max-width: 540px) {
-  .opening-page__title a {
-    padding: 24px;
+@media (max-width: 640px) {
+  .opening-page__steps {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    margin: 26px 0;
+  }
+  .opening-page__steps li {
+    padding: 16px;
+  }
+  .opening-page__start {
+    padding: 20px 24px;
   }
 }
 .vibe-page {
@@ -1868,6 +1927,104 @@ body.draw-mode #edit-page div {
     margin-left: 0;
   }
 }
+#edit-tools {
+  align-self: start;
+}
+#edit-tools .tools-toggle, #edit-tools .tools {
+  width: 48px;
+  height: 48px;
+  padding: 11px;
+  border: 1px solid #cbb9bb;
+  border-radius: 13px;
+  box-shadow: 0 2px 4px rgba(57, 41, 43, 0.08);
+  transition: background-color 0.15s, border-color 0.15s;
+}
+#edit-tools .tools-toggle svg, #edit-tools .tools svg {
+  width: 26px;
+  height: 26px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+#edit-tools .tools-toggle {
+  background: #bba292;
+  border-color: #bba292;
+  color: white;
+}
+#edit-tools .tools {
+  background: #e4d8da;
+  color: #393234;
+}
+#edit-tools .tools:hover {
+  background: #d8c7ca;
+  filter: none;
+}
+#edit-tools .tools[aria-expanded=true], #edit-tools .tools.active {
+  background: #cbb5b9;
+  border-color: #736064;
+  outline: 2px solid #736064;
+  outline-offset: 2px;
+}
+#edit-tools #colors::before {
+  content: none;
+}
+#edit-tools .tools-list {
+  gap: 16px;
+  margin-top: 16px;
+}
+#edit-tools .tool-item {
+  position: relative;
+  width: 48px;
+}
+#edit-tools .tool-info {
+  position: absolute;
+  top: -7px;
+  right: -9px;
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: 1px solid #b9a4a8;
+  border-radius: 50%;
+  background: #fffdfd;
+  color: #514247;
+  font: 700 13px/1 Georgia, serif;
+  box-shadow: 0 1px 3px rgba(57, 41, 43, 0.08);
+}
+#edit-tools .tool-info:hover {
+  background: #f4ecee;
+}
+#edit-tools .tools:focus-visible, #edit-tools .tools-toggle:focus-visible, #edit-tools .tool-info:focus-visible {
+  outline: 2px solid #514247;
+  outline-offset: 3px;
+}
+
+.tool-help {
+  position: fixed;
+  z-index: 21000;
+  width: min(240px, 100vw - 16px);
+  padding: 12px 14px;
+  border: 1px solid #d6c5c7;
+  border-radius: 10px;
+  background: #fffdfd;
+  color: #393234;
+  box-shadow: 0 6px 20px rgba(57, 41, 43, 0.14);
+  font: 14px/1.45 Arial, sans-serif;
+  text-align: left;
+  letter-spacing: normal;
+}
+.tool-help strong {
+  display: block;
+  margin-bottom: 4px;
+  font-weight: 700;
+}
+.tool-help[hidden] {
+  display: none;
+}
+
 #final-status {
   max-width: 720px;
   margin: 16px auto;
